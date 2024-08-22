@@ -11,7 +11,7 @@ import {
   accountStore,
   setStage,
   tryToRestoreAccount,
-} from "@/stores/polkadotAccount";
+} from "@/stores/polkadot/polkadotAccount";
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
 import { decryptMessage } from "@/utils/web3-onboard/services";
 import { SendTransactionButton } from "@/components/polkadot/stages/SendTransactionButton";

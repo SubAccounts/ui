@@ -6,7 +6,7 @@ import { BigNumber } from "ethers";
 import { toBigNumber } from "common-crypto-tools/common";
 
 import { polkadotBalanceValue } from "@/utils/polkadotBalanceValue";
-import { polkadotLedgerStore } from "@/stores/polkadotLedgerStore";
+import { polkadotLedgerStore } from "@/stores/polkadot/polkadotLedgerStore";
 
 type PolkadotAccountBalanceProps = {
   account: string;

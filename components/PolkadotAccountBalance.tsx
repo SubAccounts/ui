@@ -3,7 +3,7 @@
 import React from "react";
 import { useStore } from "@nanostores/react";
 
-import { polkadotAccountsStore } from "@/stores/polkadotAccountsStore";
+import { polkadotAccountsStore } from "@/stores/polkadot/polkadotAccountsStore";
 import { polkadotBalanceValue } from "@/utils/polkadotBalanceValue";
 
 type PolkadotAccountBalanceProps = {

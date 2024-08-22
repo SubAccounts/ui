@@ -1,6 +1,6 @@
 import TextPage from "@/components/layout/TextPage";
 
-export default function DocsLayout({
+export default function SponsorLayout({
   children,
 }: {
   children: React.ReactNode;

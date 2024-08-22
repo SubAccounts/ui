@@ -2,7 +2,7 @@ import { atom } from "nanostores";
 import { api } from "common-crypto-tools/polkadot";
 import { System_Account_Json } from "common-crypto-tools/types/polkadot";
 
-import { loadApiPromise } from "@/stores/polkadotApiPromise";
+import { loadApiPromise } from "@/stores/polkadot/polkadotApiPromise";
 import { withRequestTimeout } from "@/stores/helpers/withRequestTimeout";
 
 export const polkadotAccountsStore = atom<Record<string, System_Account_Json>>(

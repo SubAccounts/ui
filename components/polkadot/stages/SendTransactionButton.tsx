@@ -11,7 +11,7 @@ import {
   isSendingNow,
   setSendingStatus,
 } from "@/stores/transactions";
-import { accountStore } from "@/stores/polkadotAccount";
+import { accountStore } from "@/stores/polkadot/polkadotAccount";
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
 import { Chains } from "@/config/chains";
 
@@ -39,6 +39,7 @@ export const SendTransactionButton: React.FC<SendTransactionButtonProps> = ({
       const success = await addEthereumTransaction(
         tx,
         wallet.accounts[0].address,
+        "Create wallet",
       );
 
       if (success) {

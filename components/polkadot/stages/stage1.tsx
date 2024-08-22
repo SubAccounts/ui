@@ -10,7 +10,7 @@ import {
   accountStore,
   generateNewAccount,
   setStage,
-} from "@/stores/polkadotAccount";
+} from "@/stores/polkadot/polkadotAccount";
 import { titleH2 } from "@/components/primitives";
 import { getAccountAddressForNetwork } from "@/utils/polkadot/getAccountAddressForNetwork";
 import { Chains } from "@/config/chains";

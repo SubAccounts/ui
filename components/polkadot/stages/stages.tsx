@@ -3,7 +3,7 @@
 import React from "react";
 import { useStore } from "@nanostores/react";
 
-import { accountStore } from "@/stores/polkadotAccount";
+import { accountStore } from "@/stores/polkadot/polkadotAccount";
 import { Stage1 } from "@/components/polkadot/stages/stage1";
 import { Stage2 } from "@/components/polkadot/stages/stage2";
 import { Stage3 } from "@/components/polkadot/stages/stage3";

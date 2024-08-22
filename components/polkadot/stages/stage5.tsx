@@ -10,7 +10,7 @@ import {
   accountStore,
   setSignedData,
   setStage,
-} from "@/stores/polkadotAccount";
+} from "@/stores/polkadot/polkadotAccount";
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
 import { encryptMessage } from "@/utils/web3-onboard/services";
 import { TextBlock } from "@/components/layout/TextBlock";

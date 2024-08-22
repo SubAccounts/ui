@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { setPassword, setStage } from "@/stores/polkadotAccount";
+import { setPassword, setStage } from "@/stores/polkadot/polkadotAccount";
 import { titleH2 } from "@/components/primitives";
 import { PasswordEditor } from "@/components/polkadot/stages/passwordEditor";
 

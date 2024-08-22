@@ -4,25 +4,24 @@ import React from "react";
 import { Button } from "@nextui-org/button";
 import { button as buttonStyles } from "@nextui-org/theme";
 import { useStore } from "@nanostores/react";
-import { toBigNumber } from "common-crypto-tools/common";
 
-import { polkadotAccountsStore } from "@/stores/polkadot/polkadotAccountsStore";
 import { DepositDialog } from "@/components/polkadot/account/DepositDialog";
+import { polkadotLedgerStore } from "@/stores/polkadot/polkadotLedgerStore";
 
 type AccountControlButtonsProps = {
   account: string;
 };
 
-export const AccountControlButtons: React.FC<AccountControlButtonsProps> = ({
+export const UnStakingInfoButton: React.FC<AccountControlButtonsProps> = ({
   account,
 }) => {
   const [depositModalIsOpen, set_depositModalIsOpen] =
     React.useState<boolean>(false);
-  const $polkadotAccountsStore = useStore(polkadotAccountsStore);
+  const $polkadotLedgerStore = useStore(polkadotLedgerStore);
 
-  const data = $polkadotAccountsStore[account];
+  const data = $polkadotLedgerStore[account];
 
-  const isNotZeroBalance = data ? toBigNumber(data.data.free).gt(0) : false;
+  const isNotZeroBalance = data ? data.unlocking.length > 0 : false;
 
   return (
     <>
@@ -41,21 +40,12 @@ export const AccountControlButtons: React.FC<AccountControlButtonsProps> = ({
             variant: "bordered",
             radius: "sm",
             color: "primary",
-          })}
-          onClick={() => set_depositModalIsOpen(true)}
-        >
-          Deposit
-        </Button>
-        <Button
-          className={buttonStyles({
-            variant: "bordered",
-            radius: "sm",
-            color: "secondary",
             isDisabled: !isNotZeroBalance,
           })}
           disabled={!isNotZeroBalance}
+          onClick={() => set_depositModalIsOpen(true)}
         >
-          Withdraw
+          Show info
         </Button>
       </div>
     </>

@@ -2,7 +2,7 @@ import { atom } from "nanostores";
 import { api } from "common-crypto-tools/polkadot";
 import { Staking_Ledger_Json } from "common-crypto-tools/types/polkadot";
 
-import { loadApiPromise } from "@/stores/polkadotApiPromise";
+import { loadApiPromise } from "@/stores/polkadot/polkadotApiPromise";
 import { withRequestTimeout } from "@/stores/helpers/withRequestTimeout";
 
 export const polkadotLedgerStore = atom<Record<string, Staking_Ledger_Json>>(

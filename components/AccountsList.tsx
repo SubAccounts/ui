@@ -11,7 +11,7 @@ import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
 import { titleH2 } from "@/components/primitives";
 import { EncodedSubWallet } from "@/types";
 import { getAccountAddressForNetwork } from "@/utils/polkadot/getAccountAddressForNetwork";
-import { loadPolkadotAccount } from "@/stores/polkadotAccountsStore";
+import { loadPolkadotAccount } from "@/stores/polkadot/polkadotAccountsStore";
 import { PolkadotAccountBalance } from "@/components/PolkadotAccountBalance";
 import { Chains } from "@/config/chains";
 

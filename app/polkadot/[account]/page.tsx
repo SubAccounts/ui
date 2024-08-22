@@ -11,9 +11,8 @@ import { explorers } from "@/config/explorers";
 import { WithCorrectOwner } from "@/components/polkadot/account/WithCorrectOwner";
 import { Chains } from "@/config/chains";
 import { PolkadotAccountBalance } from "@/components/PolkadotAccountBalance";
-import { loadPolkadotAccount } from "@/stores/polkadotAccountsStore";
+import { loadPolkadotAccount } from "@/stores/polkadot/polkadotAccountsStore";
 import { SubAccountInfo } from "@/components/polkadot/account/SubAccountInfo";
-import { AccountControlButtons } from "@/components/polkadot/account/AccountControlButtons";
 
 export default function PolkadotPage({
   params: { account },
@@ -52,7 +51,6 @@ export default function PolkadotPage({
         </div>
       </Title>
       <WithCorrectOwner chain={Chains.Polkadot} subAccount={account}>
-        <AccountControlButtons account={account} />
         <SubAccountInfo account={account} />
       </WithCorrectOwner>
     </section>

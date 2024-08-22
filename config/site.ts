@@ -6,11 +6,13 @@ type Link = {
 };
 
 const externalLinks = {
-  github: "https://github.com/nextui-org/nextui",
-  twitter: "https://twitter.com/getnextui",
-  docs: "https://nextui.org",
-  discord: "https://discord.gg/9b6yyZKmH4",
-  sponsor: "https://patreon.com/jrgarciadev",
+  github: "https://github.com/SubAccounts",
+  twitter: "https://twitter.com/",
+  docs: "https://sub-accounts.org/docs",
+  discord: null,
+  sponsor: "/sponsor",
+  ronin: "https://t.me/blockchain_ronin",
+  support: "0x3877fbDe425d21f29F4cB3e739Cf75CDECf8EdCE",
 };
 
 export type SiteConfig = {
@@ -35,10 +37,6 @@ const navItems = [
 
 const footerItems = [
   {
-    label: "Home",
-    href: "/",
-  },
-  {
     label: "White paper",
     href: "/white_paper",
   },
@@ -58,6 +56,10 @@ const footerItems = [
 
 const mobileItems = [
   {
+    label: "Home",
+    href: "/",
+  },
+  {
     label: "Polkadot",
     href: `/${Chains.Polkadot}`,
   },
@@ -65,8 +67,9 @@ const mobileItems = [
 ];
 
 export const siteConfig: SiteConfig = {
-  name: "SubAccounts - we are awesome",
-  description: "Make beautiful websites regardless of your design experience.",
+  name: "SubAccounts - smart accounts for each blockchain.",
+  description:
+    "SubAccounts enables secure Polkadot staking using Ethereum wallets. Effortlessly manage encrypted SubAccounts, cross-chain integrations, and staking operations through a user-friendly interface.\n",
   navItems,
   footerItems,
   mobileItems,

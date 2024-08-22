@@ -6,7 +6,11 @@ import { Button } from "@nextui-org/button";
 import { button as buttonStyles } from "@nextui-org/theme";
 
 import { titleH2 } from "@/components/primitives";
-import { accountStore, prepareData, setStage } from "@/stores/polkadotAccount";
+import {
+  accountStore,
+  prepareData,
+  setStage,
+} from "@/stores/polkadot/polkadotAccount";
 import { getAccountAddressForNetwork } from "@/utils/polkadot/getAccountAddressForNetwork";
 import { Chains } from "@/config/chains";
 import { TextBlock } from "@/components/layout/TextBlock";

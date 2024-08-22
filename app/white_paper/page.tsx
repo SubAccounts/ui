@@ -1,4 +1,5 @@
 import { title } from "@/components/primitives";
+import { HomeButton } from "@/components/layout/HomeButton";
 
 export default function WhitePaperPage() {
   return (
@@ -219,6 +220,9 @@ export default function WhitePaperPage() {
         expansion to multiple networks and advanced staking functionalities,
         solidifying SubAccounts as a leading solution in cross-chain staking
         management.
+      </p>
+      <p>
+        <HomeButton />
       </p>
     </div>
   );

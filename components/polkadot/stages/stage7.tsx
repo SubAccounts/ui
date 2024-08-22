@@ -5,7 +5,7 @@ import { Button } from "@nextui-org/button";
 import { button as buttonStyles } from "@nextui-org/theme";
 
 import { titleH2 } from "@/components/primitives";
-import { setStage } from "@/stores/polkadotAccount";
+import { setStage } from "@/stores/polkadot/polkadotAccount";
 import { SendTransactionButton } from "@/components/polkadot/stages/SendTransactionButton";
 
 export const Stage7: React.FC = () => {
