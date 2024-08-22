@@ -3,9 +3,9 @@
 import React, { useEffect } from "react";
 
 import { titleH2, titleH3 } from "@/components/primitives";
-import { PolkadotAccountBalance } from "@/components/PolkadotAccountBalance";
+import { PolkadotAccountBalance } from "@/components/polkadot/PolkadotAccountBalance";
 import { loadPolkadotLedger } from "@/stores/polkadot/polkadotLedgerStore";
-import { PolkadotLedgerBalance } from "@/components/PolkadotLedgerBalance";
+import { PolkadotLedgerBalance } from "@/components/polkadot/PolkadotLedgerBalance";
 import { AccountControlButtons } from "@/components/polkadot/account/AccountControlButtons";
 import { BondUnBondButtons } from "@/components/polkadot/account/BondUnBondButtons";
 import { UnStakingInfoButton } from "@/components/polkadot/account/UnStakingInfoButton";

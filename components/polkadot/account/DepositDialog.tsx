@@ -27,6 +27,7 @@ export const DepositDialog: React.FC<DepositDialogProps> = ({
     <Modal
       className="rounded mt-2 mx-2"
       isOpen={isOpen}
+      scrollBehavior="outside"
       shouldBlockScroll={true}
       size="2xl"
       onClose={onClose}

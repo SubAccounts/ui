@@ -69,7 +69,7 @@ const mobileItems = [
 export const siteConfig: SiteConfig = {
   name: "SubAccounts - smart accounts for each blockchain.",
   description:
-    "SubAccounts enables secure Polkadot staking using Ethereum wallets. Effortlessly manage encrypted SubAccounts, cross-chain integrations, and staking operations through a user-friendly interface.\n",
+    "SubAccounts enables secure Polkadot staking using Ethereum wallets. Effortlessly manage encrypted SubAccounts, cross-chain integrations, and staking operations through a user-friendly interface.",
   navItems,
   footerItems,
   mobileItems,

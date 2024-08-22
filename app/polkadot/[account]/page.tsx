@@ -10,7 +10,7 @@ import { subtitle, title } from "@/components/primitives";
 import { explorers } from "@/config/explorers";
 import { WithCorrectOwner } from "@/components/polkadot/account/WithCorrectOwner";
 import { Chains } from "@/config/chains";
-import { PolkadotAccountBalance } from "@/components/PolkadotAccountBalance";
+import { PolkadotAccountBalance } from "@/components/polkadot/PolkadotAccountBalance";
 import { loadPolkadotAccount } from "@/stores/polkadot/polkadotAccountsStore";
 import { SubAccountInfo } from "@/components/polkadot/account/SubAccountInfo";
 

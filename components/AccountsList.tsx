@@ -12,7 +12,7 @@ import { titleH2 } from "@/components/primitives";
 import { EncodedSubWallet } from "@/types";
 import { getAccountAddressForNetwork } from "@/utils/polkadot/getAccountAddressForNetwork";
 import { loadPolkadotAccount } from "@/stores/polkadot/polkadotAccountsStore";
-import { PolkadotAccountBalance } from "@/components/PolkadotAccountBalance";
+import { PolkadotAccountBalance } from "@/components/polkadot/PolkadotAccountBalance";
 import { Chains } from "@/config/chains";
 
 type AccountsListProps = {
