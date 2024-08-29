@@ -1,17 +1,15 @@
-export enum NetworkIds {
-  Ethereum = "0x1",
-  Sepolia = "0xaa36a7",
-}
+import { NetworksWithDeployedContract } from "sub-accounts-contract/contracts";
 
-export const DEFAULT_CHAIN: NetworkIds = NetworkIds.Sepolia;
+export const DEFAULT_CHAIN: NetworksWithDeployedContract =
+  NetworksWithDeployedContract.Sepolia;
 
-export const Networks: Record<NetworkIds, string> = {
-  [NetworkIds.Ethereum]: "Ethereum",
-  [NetworkIds.Sepolia]: "Sepolia",
+export const Networks: Record<NetworksWithDeployedContract, string> = {
+  [NetworksWithDeployedContract.Ethereum]: "Ethereum",
+  [NetworksWithDeployedContract.Sepolia]: "Sepolia",
 };
 
 export const networkConfig: Record<
-  NetworkIds,
+  NetworksWithDeployedContract,
   {
     id: number;
     token: string;
@@ -20,14 +18,14 @@ export const networkConfig: Record<
     blockExplorerUrls?: string[];
   }
 > = {
-  [NetworkIds.Sepolia]: {
+  [NetworksWithDeployedContract.Sepolia]: {
     id: 11155111,
     token: "ETH",
     label: "Sepolia",
     rpcUrl: "https://rpc.sepolia.org/",
     // blockExplorerUrls: ["https://ropsten.etherscan.io"],
   },
-  [NetworkIds.Ethereum]: {
+  [NetworksWithDeployedContract.Ethereum]: {
     id: 1,
     token: "ETH",
     label: "Ethereum",

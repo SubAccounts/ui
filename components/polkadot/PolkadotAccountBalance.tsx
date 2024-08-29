@@ -8,12 +8,12 @@ import { polkadotBalanceValue } from "@/utils/polkadotBalanceValue";
 
 type PolkadotAccountBalanceProps = {
   account: string;
-  param?: "free" | "reserved" | "frozen";
+  param?: "free" | "reserved" | "frozen" | "transferable";
 };
 
 export const PolkadotAccountBalance: React.FC<PolkadotAccountBalanceProps> = ({
   account,
-  param = "free",
+  param = "transferable",
 }) => {
   const $polkadotAccountsStore = useStore(polkadotAccountsStore);
 

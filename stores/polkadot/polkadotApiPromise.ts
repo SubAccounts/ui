@@ -32,11 +32,3 @@ export async function loadApiPromise() {
 
   return newApiPromise;
 }
-
-// onMount(polkadotApiPromise, () => {
-//   ApiPromise.create({
-//     provider: new WsProvider("wss://polkadot-rpc.publicnode.com"),
-//   }).then((apiPromise) => {
-//     polkadotApiPromise.set(apiPromise);
-//   });
-// });

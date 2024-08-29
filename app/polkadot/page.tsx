@@ -3,11 +3,10 @@ import React from "react";
 
 import { title } from "@/components/primitives";
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
-import { ConnectWallet } from "@/components/ConnectWallet";
 import { AccountsList } from "@/components/AccountsList";
-import { SwitchChain } from "@/components/SwitchChain";
 import Center from "@/components/layout/Center";
 import { Chains } from "@/config/chains";
+import { WalletConnector } from "@/components/Web3/WalletConnector";
 
 export default function PolkadotPage() {
   const web3 = useWeb3Onboard();
@@ -23,15 +22,9 @@ export default function PolkadotPage() {
             <h1 className={title({ color: "pink" })}>POLKADOT</h1>
           </div>
         </div>
-        {web3.wallet ? (
-          web3.isValidChain ? (
-            <AccountsList network={Chains.Polkadot} />
-          ) : (
-            <SwitchChain />
-          )
-        ) : (
-          <ConnectWallet />
-        )}
+        <WalletConnector>
+          <AccountsList network={Chains.Polkadot} />
+        </WalletConnector>
       </section>
     </Center>
   );

@@ -4,9 +4,10 @@ import metamaskModule from "@web3-onboard/metamask";
 import gas from "@web3-onboard/gas";
 import { OnboardAPI, WalletState } from "@web3-onboard/core";
 import { ethers } from "ethers";
-import * as sigUtil from "@metamask/eth-sig-util";
+import { NetworksWithDeployedContract } from "sub-accounts-contract/contracts";
+import * as crypto from "sub-accounts-lib/crypto";
 
-import { networkConfig, NetworkIds } from "@/utils/web3-onboard/networks";
+import { networkConfig } from "@/utils/web3-onboard/networks";
 
 const injected = injectedModule({
   custom: [
@@ -51,7 +52,7 @@ export const initWeb3Onboard: OnboardAPI = init({
     //         },
     //       ],
     //     },
-    networkConfig[NetworkIds.Sepolia],
+    networkConfig[NetworksWithDeployedContract.Sepolia],
   ],
   appMetadata: {
     name: "Blocknative Web3-Onboard",
@@ -103,63 +104,42 @@ export async function encryptMessage(
 ): Promise<string> {
   const provider = new ethers.providers.Web3Provider(wallet.provider);
 
-  // Получение публичного ключа для шифрования
-  // @ts-ignore
-  const publicKey = await provider.provider.request({
-    method: "eth_getEncryptionPublicKey",
-    params: [wallet.accounts[0].address],
-  });
-
-  console.log("Публичный ключ:", publicKey);
-
-  // Шифрование сообщения с использованием eth-sig-util
-  const encryptedMessage = sigUtil.encrypt({
-    publicKey: publicKey,
-    data: message,
-    version: "x25519-xsalsa20-poly1305",
-  });
-
-  console.log("Зашифрованное сообщение:", encryptedMessage);
-
-  return JSON.stringify(encryptedMessage);
+  return await crypto.encryptEthers(
+    provider,
+    wallet.accounts[0].address,
+    message,
+  );
 }
 
-export // Функция для подключения кошелька и шифрования сообщения
-async function decryptMessage(
+export async function decryptMessage(
   wallet: WalletState,
   encryptedMessage: string,
 ): Promise<string> {
-  const provider = new ethers.providers.Web3Provider(wallet.provider);
-
-  // Преобразование зашифрованного сообщения в строку для отправки
-  const encryptedMessageStr = ethers.utils.hexlify(
-    Buffer.from(JSON.stringify(encryptedMessage)),
-  );
-
-  // Расшифровка сообщения
   try {
-    // @ts-ignore
-    const decryptedMessage = await provider.provider.request({
-      method: "eth_decrypt",
-      params: [encryptedMessageStr, wallet.accounts[0].address],
-    });
+    const provider = new ethers.providers.Web3Provider(wallet.provider);
 
-    console.log("Расшифрованное сообщение:", decryptedMessage);
-
-    return decryptedMessage;
+    return await crypto.decryptEthers(
+      provider,
+      wallet.accounts[0].address,
+      encryptedMessage,
+    );
   } catch (error) {
     // @ts-ignore
     const { message } = error;
 
-    console.error("Ошибка при расшифровке:", message);
-    throw new Error(message);
+    console.error("Error while decrypting:", message);
+    throw error;
   }
 }
 
 // subscribe to a single chain for estimates using the default poll rate of 5 secs
 // API key is optional and if provided allows for faster poll rates
-export const ethMainnetGasBlockPrices = gas.stream({
+export const ethGasBlockPrices = gas.stream({
   chains: ["0x1"],
   // apiKey: dappId,
   endpoint: "blockPrices",
 });
+
+if (typeof window !== "undefined") {
+  (window as any).ethGasBlockPrices = ethGasBlockPrices;
+}

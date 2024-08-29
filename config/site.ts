@@ -33,6 +33,10 @@ const navItems = [
     label: "Polkadot",
     href: `/${Chains.Polkadot}`,
   },
+  {
+    label: "Transactions",
+    href: `/transactions`,
+  },
 ];
 
 const footerItems = [

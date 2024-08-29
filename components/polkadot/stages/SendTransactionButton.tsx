@@ -6,11 +6,7 @@ import { Button } from "@nextui-org/button";
 import { useStore } from "@nanostores/react";
 import { useRouter } from "next/navigation";
 
-import {
-  addEthereumTransaction,
-  isSendingNow,
-  setSendingStatus,
-} from "@/stores/transactions";
+import { addEthereumTransaction, isSendingNow } from "@/stores/transactions";
 import { accountStore } from "@/stores/polkadot/polkadotAccount";
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
 import { Chains } from "@/config/chains";
@@ -29,15 +25,14 @@ export const SendTransactionButton: React.FC<SendTransactionButtonProps> = ({
 
   async function sendTransaction() {
     if (contract && account && wallet) {
-      setSendingStatus(true);
-      const tx = await contract.storeEncryptedAccount(
-        signedData,
-        Chains.Polkadot,
-        account.address,
-      );
-
       const success = await addEthereumTransaction(
-        tx,
+        async () => {
+          return await contract.storeSubAccount(
+            signedData,
+            Chains.Polkadot,
+            account.address,
+          );
+        },
         wallet.accounts[0].address,
         "Create wallet",
       );

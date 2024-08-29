@@ -4,7 +4,7 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
 
-export type EncodedSubWallet = {
+export type EncodedSubAccount = {
   owner: string;
   encodedData: string;
   address: string;

@@ -3,29 +3,32 @@ import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { OnboardAPI, WalletState } from "@web3-onboard/core";
 import { useConnectWallet } from "@web3-onboard/react";
 import { ethers } from "ethers";
+import {
+  SubAccounts,
+  SubAccounts__factory,
+} from "sub-accounts-contract/ethers-v5";
+import {
+  contracts,
+  NetworksWithDeployedContract,
+} from "sub-accounts-contract/contracts";
 
 import { initWeb3Onboard } from "@/utils/web3-onboard/services";
-import { SubWallets } from "@/utils/contracts/typechain/ethers-v5/SubWallets/SubWallets";
-import { SubWallets__factory } from "@/utils/contracts/typechain/ethers-v5/SubWallets";
-import { Contracts } from "@/utils/contracts/contracts";
-import { EncodedSubWallet } from "@/types";
-import {
-  DEFAULT_CHAIN,
-  networkConfig,
-  NetworkIds,
-} from "@/utils/web3-onboard/networks";
+import { EncodedSubAccount } from "@/types";
+import { DEFAULT_CHAIN, networkConfig } from "@/utils/web3-onboard/networks";
+
+// import { SubAccounts__factory } from "@/utils/contracts/typechain/ethers-v5/SubAccounts";
 
 export interface IWeb3OnboardProviderContext {
   wallet: WalletState | null;
   connect: () => void;
   disconnect: () => void;
   loading: boolean;
-  contract: SubWallets | null;
-  encodedSubWallets: EncodedSubWallet[];
+  contract: SubAccounts | null;
+  encodedSubAccounts: EncodedSubAccount[];
   subWalletsLoading: boolean;
   reload: () => void;
   isValidChain: boolean;
-  switchChain: (chainId: NetworkIds) => void | Promise<void>;
+  switchChain: (chainId: NetworksWithDeployedContract) => void | Promise<void>;
 }
 
 export const Web3OnboardProviderContext =
@@ -42,7 +45,7 @@ export const Web3OnboardProviderContext =
       // do nothing
     },
     contract: null,
-    encodedSubWallets: [],
+    encodedSubAccounts: [],
     subWalletsLoading: true,
     isValidChain: false,
     switchChain: () => {
@@ -57,8 +60,8 @@ export const Web3OnboardProvider = ({ children }: { children: ReactNode }) => {
     React.useState<IWeb3OnboardProviderContext["contract"]>(null);
   const [{ wallet }] = useConnectWallet();
   const [web3Onboard, setWeb3Onboard] = useState<OnboardAPI>();
-  const [encodedSubWallets, set_encodedSubWallets] = React.useState<
-    IWeb3OnboardProviderContext["encodedSubWallets"]
+  const [encodedSubAccounts, set_encodedSubAccounts] = React.useState<
+    IWeb3OnboardProviderContext["encodedSubAccounts"]
   >([]);
   const [subWalletsLoading, set_subWalletsLoading] =
     React.useState<boolean>(true);
@@ -67,10 +70,12 @@ export const Web3OnboardProvider = ({ children }: { children: ReactNode }) => {
   const [currentWalletAddress, set_currentWalletAddress] =
     React.useState<string>("");
 
-  async function loadSubWallets(address: string, contract: SubWallets) {
-    const accounts = await contract.getAccountsByAddress(address);
+  console.log(encodedSubAccounts);
 
-    set_encodedSubWallets(
+  async function loadSubWallets(address: string, contract: SubAccounts) {
+    const accounts = await contract.getSubAccountsByAddress(address);
+
+    set_encodedSubAccounts(
       accounts.map(([owner, encryptedAccount, network, accountAddress]) => ({
         owner,
         encodedData: encryptedAccount,
@@ -90,7 +95,7 @@ export const Web3OnboardProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  async function switchChain(chainId: NetworkIds) {
+  async function switchChain(chainId: NetworksWithDeployedContract) {
     // const chainId = NetworkIds.Sepolia;
 
     if (wallet) {
@@ -134,8 +139,8 @@ export const Web3OnboardProvider = ({ children }: { children: ReactNode }) => {
 
       const signer = provider.getSigner();
 
-      const contract = SubWallets__factory.connect(
-        Contracts[DEFAULT_CHAIN],
+      const contract = SubAccounts__factory.connect(
+        contracts[DEFAULT_CHAIN],
         signer,
       );
 
@@ -152,7 +157,7 @@ export const Web3OnboardProvider = ({ children }: { children: ReactNode }) => {
   }, [wallet ? wallet.accounts[0].address : ""]);
 
   React.useEffect(() => {
-    set_encodedSubWallets([]);
+    set_encodedSubAccounts([]);
     if (currentWalletAddress && contract) {
       set_subWalletsLoading(true);
       void loadSubWallets(currentWalletAddress, contract);
@@ -176,7 +181,7 @@ export const Web3OnboardProvider = ({ children }: { children: ReactNode }) => {
         disconnect: () =>
           wallet ? web3Onboard?.disconnectWallet(wallet) : null,
         contract,
-        encodedSubWallets,
+        encodedSubAccounts,
         subWalletsLoading,
         reload,
         isValidChain: canConnect,

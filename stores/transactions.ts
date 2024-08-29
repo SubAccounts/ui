@@ -5,30 +5,50 @@ import { KeyringPair } from "@polkadot/keyring/types";
 
 import { createSimplePersistentAtom } from "@/utils/helpers/createSimplePersistentAtom";
 
-enum Networks {
+export enum TransactionNetworks {
   Sepolia,
   Polkadot,
   Ethereum,
 }
 
-enum TransactionStatus {
+export const TransactionNetworkName: Record<TransactionNetworks, string> = {
+  [TransactionNetworks.Sepolia]: "Sepolia",
+  [TransactionNetworks.Polkadot]: "Polkadot",
+  [TransactionNetworks.Ethereum]: "Ethereum",
+};
+
+export enum TransactionStatus {
   New,
   Success,
   Error,
+  Broadcast,
+  InBlock,
 }
+
+export const TransactionStatusName: Record<TransactionStatus, string> = {
+  [TransactionStatus.New]: "New",
+  [TransactionStatus.Success]: "Success",
+  [TransactionStatus.Error]: "Error",
+  [TransactionStatus.Broadcast]: "Broadcasting",
+  [TransactionStatus.InBlock]: "In block",
+};
 
 type Transaction = {
   signer: string;
   hash: string;
   status: TransactionStatus;
-  network: Networks;
+  network: TransactionNetworks;
   name: string;
+  date: number;
+  owner: string;
 };
 
 export const transactionsStore = createSimplePersistentAtom<Transaction[]>(
   [],
   "transactions",
 );
+
+export const activeTransaction = atom<string | null>(null);
 
 export const isSendingNow = atom<boolean>(false);
 
@@ -42,14 +62,17 @@ function addTransaction({
   network,
   status = TransactionStatus.New,
   name,
+  owner,
 }: {
   signer: string;
   hash: string;
-  network: Networks;
+  network: TransactionNetworks;
   status?: TransactionStatus;
   name: string;
+  owner: string;
 }) {
   if (!transactionsStore.get().find((e) => e.hash === hash)) {
+    activeTransaction.set(hash);
     transactionsStore.set([
       ...transactionsStore.get(),
       {
@@ -58,12 +81,24 @@ function addTransaction({
         status,
         network,
         name,
+        date: Date.now(),
+        owner,
       },
     ]);
   }
 }
 
 function updateTransactionStatus(hash: string, status: TransactionStatus) {
+  if (activeTransaction.get() === hash) {
+    if (
+      status === TransactionStatus.Success ||
+      status === TransactionStatus.Error
+    ) {
+      setTimeout(() => {
+        activeTransaction.set(null);
+      }, 3000);
+    }
+  }
   transactionsStore.set([
     ...[...transactionsStore.get()].map((e) => {
       if (e.hash === hash) {
@@ -79,35 +114,48 @@ export async function addPolkadotTransaction(
   extrinsic: SubmittableExtrinsic,
   signer: KeyringPair,
   name: string,
+  owner: string,
 ): Promise<boolean> {
   isSendingNow.set(true);
 
   let hash: string;
 
   return new Promise((resolve) => {
+    console.log("Submitting");
+    setSendingStatus(true);
     extrinsic.signAndSend(signer, (result) => {
+      console.log("Status", result.status.type);
       if (result.status.isReady) {
         hash = result.txHash.toHuman() as string;
         addTransaction({
           signer: signer.address,
           hash,
-          network: Networks.Sepolia,
+          network: TransactionNetworks.Polkadot,
           name,
+          owner,
         });
       }
-      if (result.status.isInBlock) {
+      if (hash && result.status.isBroadcast) {
+        updateTransactionStatus(hash, TransactionStatus.Broadcast);
+      }
+      if (hash && result.status.isInBlock) {
+        updateTransactionStatus(hash, TransactionStatus.InBlock);
+      }
+      if (result.status.isFinalized || result.status.isRetracted) {
         if (hash) {
           updateTransactionStatus(hash, TransactionStatus.Success);
         } else {
           addTransaction({
             signer: signer.address,
             hash,
-            network: Networks.Sepolia,
+            network: TransactionNetworks.Sepolia,
             status: TransactionStatus.Success,
             name,
+            owner,
           });
-          resolve(true);
         }
+        resolve(true);
+        setSendingStatus(false);
       } else if (
         result.status.isInvalid ||
         result.status.isRetracted ||
@@ -119,29 +167,42 @@ export async function addPolkadotTransaction(
           addTransaction({
             signer: signer.address,
             hash,
-            network: Networks.Sepolia,
+            network: TransactionNetworks.Sepolia,
             status: TransactionStatus.Error,
             name,
+            owner,
           });
-          resolve(false);
         }
+        resolve(false);
+        setSendingStatus(false);
       }
     });
   });
 }
 
 export async function addEthereumTransaction(
-  tx: ContractTransaction,
+  txCreator: () => Promise<ContractTransaction>,
   signer: string,
   name: string,
 ): Promise<boolean> {
   isSendingNow.set(true);
 
-  addTransaction({ signer, hash: tx.hash, network: Networks.Sepolia, name });
-
   let success = false;
+  let hash = `undefined_tx_${Math.random()}`;
 
   try {
+    const tx = await txCreator();
+
+    hash = tx.hash;
+
+    addTransaction({
+      signer,
+      hash: tx.hash,
+      network: TransactionNetworks.Sepolia,
+      name,
+      owner: signer,
+    });
+
     await tx.wait();
     success = true;
   } catch (e) {
@@ -150,7 +211,7 @@ export async function addEthereumTransaction(
 
   setSendingStatus(false);
   updateTransactionStatus(
-    tx.hash,
+    hash,
     success ? TransactionStatus.Success : TransactionStatus.Error,
   );
 

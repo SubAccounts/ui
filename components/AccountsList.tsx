@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
 import { titleH2 } from "@/components/primitives";
-import { EncodedSubWallet } from "@/types";
+import { EncodedSubAccount } from "@/types";
 import { getAccountAddressForNetwork } from "@/utils/polkadot/getAccountAddressForNetwork";
 import { loadPolkadotAccount } from "@/stores/polkadot/polkadotAccountsStore";
 import { PolkadotAccountBalance } from "@/components/polkadot/PolkadotAccountBalance";
@@ -19,7 +19,7 @@ type AccountsListProps = {
   network: string;
 };
 
-type EncodedSubWalletWithNetworkAddress = EncodedSubWallet & {
+type EncodedSubWalletWithNetworkAddress = EncodedSubAccount & {
   networkAddress: string;
 };
 
@@ -28,7 +28,7 @@ export const AccountsList: React.FC<AccountsListProps> = ({ network }) => {
   const web3 = useWeb3Onboard();
 
   const accounts: EncodedSubWalletWithNetworkAddress[] = [
-    ...web3.encodedSubWallets,
+    ...web3.encodedSubAccounts,
   ]
     .filter((e) => e.network === network)
     .map((e) => {

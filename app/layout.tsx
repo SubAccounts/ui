@@ -8,6 +8,7 @@ import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { ActiveTransactionWidget } from "@/components/transactions/ActiveTransactionWidget";
 
 export const metadata: Metadata = {
   title: {
@@ -49,6 +50,7 @@ export default function RootLayout({
             </main>
             <Footer />
           </div>
+          <ActiveTransactionWidget />
         </Providers>
       </body>
     </html>
