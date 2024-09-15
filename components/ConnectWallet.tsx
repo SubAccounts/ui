@@ -1,11 +1,10 @@
 "use client";
 
 import React from "react";
-import { Button } from "@nextui-org/button";
-import { button as buttonStyles } from "@nextui-org/theme";
 
 import { titleH2 } from "@/components/primitives";
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
+import { ConnectWalletButton } from "@/components/ConnectWalletButton";
 
 export const ConnectWallet: React.FC = () => {
   const web3 = useWeb3Onboard();
@@ -26,16 +25,7 @@ export const ConnectWallet: React.FC = () => {
         flex w-full
         items-center justify-start gap-4"
       >
-        <Button
-          className={buttonStyles({
-            variant: "bordered",
-            radius: "sm",
-            color: "secondary",
-          })}
-          onClick={web3.connect}
-        >
-          Connect wallet
-        </Button>
+        <ConnectWalletButton />
       </div>
     </>
   );

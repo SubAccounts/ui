@@ -6,36 +6,38 @@ import { useSubAccount } from "@/components/polkadot/account/WithCorrectOwner";
 import { buttonStyles } from "@/utils/ui/buttonStyles";
 import { Dialog } from "@/components/Dialog/Dialog";
 import { useToggleHandler } from "@/hooks/useToggleHandler";
+import { defaultPassword } from "@/config/site";
 
 type SendButtonProps = {
-  onAccountRestore: (account: KeyringPair) => void | Promise<void>;
+  onAccountUnlock: (account: KeyringPair) => void | Promise<void>;
 };
 
 export const UnlockAccountButton: React.FC<SendButtonProps> = ({
-  onAccountRestore,
+  onAccountUnlock,
 }) => {
   const [dialogIsOpen, toggle] = useToggleHandler();
-  const { subAccount, unlockedAccount } = useSubAccount();
-  const [accountPassword, set_accountPassword] = React.useState<string>("");
+  const { subAccount, restoredAccount } = useSubAccount();
+  const [accountPassword, set_accountPassword] =
+    React.useState<string>(defaultPassword);
   const [encryptionPassword, set_encryptionPassword] =
-    React.useState<string>("");
+    React.useState<string>(defaultPassword);
 
   function restore() {
-    if (unlockedAccount) {
+    if (restoredAccount) {
       const account = SubAccounts.decrypt(
-        unlockedAccount,
+        restoredAccount,
         accountPassword,
         encryptionPassword,
       );
 
-      onAccountRestore(account);
+      onAccountUnlock(account);
     }
   }
 
   let buttonText = "Hmm...";
   let disabled = true;
 
-  if (unlockedAccount) {
+  if (restoredAccount) {
     buttonText = "Unlock account";
     disabled = false;
   }

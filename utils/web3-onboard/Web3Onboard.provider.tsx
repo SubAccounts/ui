@@ -15,10 +15,12 @@ import {
 import { initWeb3Onboard } from "@/utils/web3-onboard/services";
 import { EncodedSubAccount } from "@/types";
 import { DEFAULT_CHAIN, networkConfig } from "@/utils/web3-onboard/networks";
-
-// import { SubAccounts__factory } from "@/utils/contracts/typechain/ethers-v5/SubAccounts";
+import { getAccountAddressForNetwork } from "@/utils/polkadot/getAccountAddressForNetwork";
+import { Chains } from "@/config/chains";
+import { setProvider, setSigner } from "@/stores/erc20Store";
 
 export interface IWeb3OnboardProviderContext {
+  currentAccountAddress: string | null;
   wallet: WalletState | null;
   connect: () => void;
   disconnect: () => void;
@@ -33,6 +35,7 @@ export interface IWeb3OnboardProviderContext {
 
 export const Web3OnboardProviderContext =
   createContext<IWeb3OnboardProviderContext>({
+    currentAccountAddress: null,
     wallet: null,
     loading: true,
     connect: () => {
@@ -56,6 +59,9 @@ export const Web3OnboardProviderContext =
 let loadTime = 0;
 
 export const Web3OnboardProvider = ({ children }: { children: ReactNode }) => {
+  const [currentAccountAddress, set_currentAccountAddress] = React.useState<
+    string | null
+  >(null);
   const [contract, set_contract] =
     React.useState<IWeb3OnboardProviderContext["contract"]>(null);
   const [{ wallet }] = useConnectWallet();
@@ -70,10 +76,18 @@ export const Web3OnboardProvider = ({ children }: { children: ReactNode }) => {
   const [currentWalletAddress, set_currentWalletAddress] =
     React.useState<string>("");
 
-  console.log(encodedSubAccounts);
-
   async function loadSubWallets(address: string, contract: SubAccounts) {
     const accounts = await contract.getSubAccountsByAddress(address);
+
+    accounts.forEach(([owner, encryptedAccount, network, accountAddress]) => {
+      console.log(
+        owner,
+        encryptedAccount,
+        network,
+        accountAddress,
+        getAccountAddressForNetwork(accountAddress, Chains.Polkadot),
+      );
+    });
 
     set_encodedSubAccounts(
       accounts.map(([owner, encryptedAccount, network, accountAddress]) => ({
@@ -96,21 +110,16 @@ export const Web3OnboardProvider = ({ children }: { children: ReactNode }) => {
   }
 
   async function switchChain(chainId: NetworksWithDeployedContract) {
-    // const chainId = NetworkIds.Sepolia;
-
     if (wallet) {
       const { provider } = wallet;
 
       try {
-        // Запрос на смену сети
         await provider.request({
           method: "wallet_switchEthereumChain",
-          params: [{ chainId }], // Например, '0x3' для Ropsten Testnet
+          params: [{ chainId }],
         });
-
-        console.log(`Успешно переключились на сеть с chainId: ${chainId}`);
       } catch (error) {
-        console.error("Ошибка при смене сети:", error);
+        console.error("Switch network error:", error);
 
         // Если сети еще нет в кошельке, добавляем ее
         // @ts-ignore
@@ -121,7 +130,7 @@ export const Web3OnboardProvider = ({ children }: { children: ReactNode }) => {
               params: [networkConfig[chainId]],
             });
           } catch (addError) {
-            console.error("Ошибка при добавлении новой сети:", addError);
+            console.error("Add new network error:", addError);
           }
         }
       }
@@ -137,7 +146,11 @@ export const Web3OnboardProvider = ({ children }: { children: ReactNode }) => {
     if (wallet && canConnect) {
       const provider = new ethers.providers.Web3Provider(wallet.provider);
 
+      setProvider(provider);
+
       const signer = provider.getSigner();
+
+      setSigner(signer);
 
       const contract = SubAccounts__factory.connect(
         contracts[DEFAULT_CHAIN],
@@ -169,12 +182,16 @@ export const Web3OnboardProvider = ({ children }: { children: ReactNode }) => {
       const chains = wallet.chains;
 
       set_canConnect(chains[0].id === DEFAULT_CHAIN);
+      set_currentAccountAddress(wallet.accounts[0].address);
+    } else {
+      set_currentAccountAddress(null);
     }
   }, [wallet]);
 
   return (
     <Web3OnboardProviderContext.Provider
       value={{
+        currentAccountAddress,
         loading: !web3Onboard,
         wallet,
         connect: () => web3Onboard?.connectWallet(),

@@ -9,6 +9,7 @@ import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { ActiveTransactionWidget } from "@/components/transactions/ActiveTransactionWidget";
+import { Web3OnboardProvider } from "@/utils/web3-onboard/Web3Onboard.provider";
 
 export const metadata: Metadata = {
   title: {
@@ -43,14 +44,16 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="relative flex flex-col h-screen">
-            <Navbar />
-            <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
-              {children}
-            </main>
-            <Footer />
-          </div>
-          <ActiveTransactionWidget />
+          <Web3OnboardProvider>
+            <div className="relative flex flex-col h-screen">
+              <Navbar />
+              <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+                {children}
+              </main>
+              <Footer />
+            </div>
+            <ActiveTransactionWidget />
+          </Web3OnboardProvider>
         </Providers>
       </body>
     </html>

@@ -79,3 +79,5 @@ export const siteConfig: SiteConfig = {
   mobileItems,
   links: externalLinks,
 };
+
+export const defaultPassword = process.env.NEXT_PUBLIC_DEFAULT_PASSWORD || "";

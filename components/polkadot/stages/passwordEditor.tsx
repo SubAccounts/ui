@@ -5,12 +5,12 @@ import { Button } from "@nextui-org/button";
 import { button as buttonStyles } from "@nextui-org/theme";
 import clsx from "clsx";
 
+import { defaultPassword } from "@/config/site";
+
 const defaultPasswordMessage = "At least 24 symbols, including 0-9 #$%^&";
 const successInputClass = "text-green-600 dark:text-green-500";
 const warningInputClass = "text-orange-600 dark:text-orange-500";
 const errorInputClass = "text-red-600 dark:text-red-500";
-
-const defaultPassword = "bbuq3qw9obuq3uru3bqbfu3#Y";
 
 type PasswordEditorProps = {
   nextButtonClick: (password: string) => void;

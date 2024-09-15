@@ -16,6 +16,7 @@ import clsx from "clsx";
 import { useStore } from "@nanostores/react";
 import { usePathname } from "next/dist/client/components/navigation";
 import React from "react";
+import { abbreviateAddress } from "common-crypto-tools/common";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
@@ -27,10 +28,21 @@ import {
   TwitterIcon,
 } from "@/components/icons";
 import { navbarStore, toggleNavBar } from "@/stores/layout/navbar";
-
+import {
+  accountAddress,
+  accountBalance,
+  accountEthBalance,
+} from "@/stores/erc20Store";
+import { ConnectWalletButton } from "@/components/ConnectWalletButton";
+import { useToggleHandler } from "@/hooks/useToggleHandler";
 export const Navbar = () => {
   const pathname = usePathname();
   const $navbarStore = useStore(navbarStore);
+  const $accountAddress = useStore(accountAddress);
+  const $accountBalance = useStore(accountBalance);
+  const $accountEthBalance = useStore(accountEthBalance);
+
+  const [accountDropdown, toggleAccountDropdown] = useToggleHandler(false);
 
   React.useEffect(() => {
     toggleNavBar(false);
@@ -106,6 +118,55 @@ export const Navbar = () => {
           >
             Sponsor and Support
           </Button>
+        </NavbarItem>
+        <NavbarItem className="hidden md:flex">
+          {$accountAddress ? (
+            <div className="relative">
+              <Button
+                aria-expanded="true"
+                aria-haspopup="true"
+                className="text-sm font-normal text-white dark:text-default-600 dark:bg-green-950 bg-green-700"
+                id="menu-button"
+                variant="flat"
+                onClick={toggleAccountDropdown()}
+              >
+                {abbreviateAddress($accountAddress, 4)}
+              </Button>
+              {accountDropdown && (
+                <div
+                  aria-labelledby="menu-button"
+                  aria-orientation="vertical"
+                  className="absolute right-0 z-10 mt-2.5 w-56 origin-top-right rounded-md
+                  bg-white dark:bg-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  role="menu"
+                >
+                  <div className="py-1" role="none">
+                    <Link
+                      className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-100"
+                      href="#"
+                      id="menu-item-0"
+                      role="menuitem"
+                    >
+                      Account settings
+                    </Link>
+                    <span className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-100">
+                      {$accountBalance} USDC
+                    </span>
+                    <span className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-100">
+                      {$accountEthBalance} ETH
+                    </span>
+
+                    <span className="divide-divider" />
+                    <span className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-100 cursor-pointer">
+                      Logout
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <ConnectWalletButton />
+          )}
         </NavbarItem>
       </NavbarContent>
 

@@ -6,30 +6,63 @@ import { button as buttonStyles } from "@nextui-org/theme";
 import { useStore } from "@nanostores/react";
 import { toBigNumber } from "common-crypto-tools/common";
 
-import { polkadotAccountsStore } from "@/stores/polkadot/polkadotAccountsStore";
-import { DepositDialog } from "@/components/polkadot/account/DepositDialog";
+import {
+  loadPolkadotAccount,
+  polkadotAccountsStore,
+} from "@/stores/polkadot/polkadotAccountsStore";
+import { DepositDialog } from "@/components/polkadot/account/chainflip/dialogs/DepositDialog";
+import { WithdrawDialog } from "@/components/polkadot/account/chainflip/dialogs/WithdrawDialog";
+import { useToggleHandler } from "@/hooks/useToggleHandler";
 
 type AccountControlButtonsProps = {
   account: string;
 };
 
+let depositModalWasOpen = false;
+let withdrawModalWasOpen = false;
+
 export const AccountControlButtons: React.FC<AccountControlButtonsProps> = ({
   account,
 }) => {
-  const [depositModalIsOpen, set_depositModalIsOpen] =
-    React.useState<boolean>(false);
+  // const [depositModalIsOpen, set_depositModalIsOpen] =
+  //   React.useState<boolean>(false);
+  const [depositModalIsOpen, toggleDepositModalIsOpen] =
+    useToggleHandler(false);
+  const [withdrawModalIsOpen, toggleWithdrawModalIsOpen] =
+    useToggleHandler(false);
   const $polkadotAccountsStore = useStore(polkadotAccountsStore);
 
   const data = $polkadotAccountsStore[account];
 
   const isNotZeroBalance = data ? toBigNumber(data.data.free).gt(0) : false;
 
+  React.useEffect(() => {
+    if (!depositModalIsOpen && depositModalWasOpen) {
+      void loadPolkadotAccount(account);
+    } else {
+      depositModalWasOpen = true;
+    }
+  }, [depositModalIsOpen]);
+
+  React.useEffect(() => {
+    if (!withdrawModalIsOpen && withdrawModalWasOpen) {
+      void loadPolkadotAccount(account);
+    } else {
+      withdrawModalWasOpen = true;
+    }
+  }, [withdrawModalIsOpen]);
+
   return (
     <>
       <DepositDialog
         account={account}
         isOpen={depositModalIsOpen}
-        onClose={() => set_depositModalIsOpen(false)}
+        onClose={toggleDepositModalIsOpen(false)}
+      />
+      <WithdrawDialog
+        account={account}
+        isOpen={withdrawModalIsOpen}
+        onClose={toggleWithdrawModalIsOpen(false)}
       />
       <div
         className="
@@ -42,7 +75,7 @@ export const AccountControlButtons: React.FC<AccountControlButtonsProps> = ({
             radius: "sm",
             color: "primary",
           })}
-          onClick={() => set_depositModalIsOpen(true)}
+          onClick={toggleDepositModalIsOpen(true)}
         >
           Deposit
         </Button>
@@ -54,6 +87,7 @@ export const AccountControlButtons: React.FC<AccountControlButtonsProps> = ({
             isDisabled: !isNotZeroBalance,
           })}
           disabled={!isNotZeroBalance}
+          onClick={toggleWithdrawModalIsOpen(true)}
         >
           Withdraw
         </Button>

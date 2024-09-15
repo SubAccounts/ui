@@ -5,7 +5,7 @@ import { Button } from "@nextui-org/button";
 import { button as buttonStyles } from "@nextui-org/theme";
 import { useStore } from "@nanostores/react";
 
-import { DepositDialog } from "@/components/polkadot/account/DepositDialog";
+import { DepositDialog } from "@/components/polkadot/account/chainflip/dialogs/DepositDialog";
 import { polkadotLedgerStore } from "@/stores/polkadot/polkadotLedgerStore";
 
 type AccountControlButtonsProps = {

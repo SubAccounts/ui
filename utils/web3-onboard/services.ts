@@ -52,7 +52,7 @@ export const initWeb3Onboard: OnboardAPI = init({
     //         },
     //       ],
     //     },
-    networkConfig[NetworksWithDeployedContract.Sepolia],
+    networkConfig[NetworksWithDeployedContract.Arbitrum],
   ],
   appMetadata: {
     name: "Blocknative Web3-Onboard",
@@ -71,11 +71,11 @@ export const initWeb3Onboard: OnboardAPI = init({
   },
   accountCenter: {
     desktop: {
-      enabled: true,
+      enabled: false,
       position: "bottomRight",
     },
     mobile: {
-      enabled: true,
+      enabled: false,
       position: "bottomLeft",
     },
   },

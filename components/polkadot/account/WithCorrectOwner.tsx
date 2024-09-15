@@ -17,15 +17,15 @@ type WithCorrectOwnerProps = {
 export interface IWithCorrectOwnerContext {
   account: EncodedSubAccount | null;
   subAccount: string;
-  unlockedAccount: string | null;
-  unlockAccount: () => void | Promise<void>;
+  restoredAccount: string | null;
+  restoreAccount: () => void | Promise<void>;
 }
 
 export const WithCorrectOwnerContext = createContext<IWithCorrectOwnerContext>({
   account: null,
   subAccount: "",
-  unlockedAccount: null,
-  unlockAccount: () => {
+  restoredAccount: null,
+  restoreAccount: () => {
     //
   },
 });
@@ -40,7 +40,7 @@ export const WithCorrectOwner: React.FC<WithCorrectOwnerProps> = ({
   chain,
 }) => {
   const web3 = useWeb3Onboard();
-  const [unlockedAccount, set_unlockedAccount] = React.useState<string | null>(
+  const [restoredAccount, set_restoredAccount] = React.useState<string | null>(
     null,
   );
 
@@ -48,7 +48,7 @@ export const WithCorrectOwner: React.FC<WithCorrectOwnerProps> = ({
     (e) => getAccountAddressForNetwork(e.address, chain) === subAccount,
   );
 
-  async function unlockAccount() {
+  async function restoreAccount() {
     if (web3 && web3.wallet && account) {
       const signedDataJson = JSON.parse(account.encodedData);
       const decryptedMessage = await decryptMessage(
@@ -56,19 +56,19 @@ export const WithCorrectOwner: React.FC<WithCorrectOwnerProps> = ({
         signedDataJson,
       );
 
-      set_unlockedAccount(decryptedMessage);
+      set_restoredAccount(decryptedMessage);
     }
   }
 
   React.useEffect(() => {
-    set_unlockedAccount("");
+    set_restoredAccount("");
   }, [account]);
 
   return (
     <>
       {account ? (
         <WithCorrectOwnerContext.Provider
-          value={{ account, subAccount, unlockedAccount, unlockAccount }}
+          value={{ account, subAccount, restoredAccount, restoreAccount }}
         >
           {children}
         </WithCorrectOwnerContext.Provider>

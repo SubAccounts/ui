@@ -1,11 +1,12 @@
 import { NetworksWithDeployedContract } from "sub-accounts-contract/contracts";
 
 export const DEFAULT_CHAIN: NetworksWithDeployedContract =
-  NetworksWithDeployedContract.Sepolia;
+  NetworksWithDeployedContract.Arbitrum;
 
 export const Networks: Record<NetworksWithDeployedContract, string> = {
   [NetworksWithDeployedContract.Ethereum]: "Ethereum",
   [NetworksWithDeployedContract.Sepolia]: "Sepolia",
+  [NetworksWithDeployedContract.Arbitrum]: "Arbitrum",
 };
 
 export const networkConfig: Record<
@@ -30,5 +31,11 @@ export const networkConfig: Record<
     token: "ETH",
     label: "Ethereum",
     rpcUrl: "https://rpc.sepolia.org/",
+  },
+  [NetworksWithDeployedContract.Arbitrum]: {
+    id: 42161,
+    token: "ETH",
+    label: "Arbitrum",
+    rpcUrl: "https://arbiscan.io/",
   },
 };

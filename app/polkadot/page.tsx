@@ -2,14 +2,40 @@
 import React from "react";
 
 import { title } from "@/components/primitives";
-import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
 import { AccountsList } from "@/components/AccountsList";
 import Center from "@/components/layout/Center";
 import { Chains } from "@/config/chains";
 import { WalletConnector } from "@/components/Web3/WalletConnector";
 
+type Currency = {
+  name: string;
+  color: "green" | "blue";
+};
+
+const ETH: Currency = {
+  name: "ETH",
+  color: "green",
+};
+
+const USDC: Currency = {
+  name: "USDC",
+  color: "blue",
+};
+
+let interval: number = 0;
+
 export default function PolkadotPage() {
-  const web3 = useWeb3Onboard();
+  const [currency, set_currency] = React.useState<Currency>(USDC);
+
+  React.useEffect(() => {
+    interval = setInterval(() => {
+      set_currency((e) => (e.name === USDC.name ? ETH : USDC));
+    }, 10_000) as unknown as number;
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <Center>
@@ -17,7 +43,9 @@ export default function PolkadotPage() {
         <div className="flex flex-col items-center justify-center w-full">
           <div className="inline-block w-full text-left justify-center">
             <h1 className={title()}>Stake your </h1>
-            <h1 className={title({ color: "green" })}>USDT&nbsp;</h1>
+            <h1 className={title({ color: currency.color })}>
+              {currency.name}&nbsp;
+            </h1>
             <h1 className={title()}>to </h1>
             <h1 className={title({ color: "pink" })}>POLKADOT</h1>
           </div>

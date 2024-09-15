@@ -1,13 +1,27 @@
 import React from "react";
 
-export function useToggleHandler(
-  initialState = false,
-): [boolean, (value?: boolean) => () => void] {
-  const [isOpen, set_isOpen] = React.useState<boolean>(initialState);
+export interface Toggler {
+  (value?: boolean, immediately?: boolean): () => void;
+}
+
+export function useToggleHandler(initialState = false): [boolean, Toggler] {
+  const [booleanValue, set_booleanValue] =
+    React.useState<boolean>(initialState);
+
+  function toggle(value?: boolean) {
+    set_booleanValue((_value) =>
+      typeof value !== "undefined" ? value : !_value,
+    );
+  }
 
   return [
-    isOpen,
-    (value?: boolean) => () =>
-      set_isOpen((_value) => (typeof value !== "undefined" ? value : !_value)),
+    booleanValue,
+    (value?: boolean, immediately?: boolean) => {
+      if (immediately) {
+        toggle(value);
+      }
+
+      return () => toggle(value);
+    },
   ];
 }

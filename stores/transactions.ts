@@ -9,12 +9,14 @@ export enum TransactionNetworks {
   Sepolia,
   Polkadot,
   Ethereum,
+  Arbitrum,
 }
 
 export const TransactionNetworkName: Record<TransactionNetworks, string> = {
   [TransactionNetworks.Sepolia]: "Sepolia",
   [TransactionNetworks.Polkadot]: "Polkadot",
   [TransactionNetworks.Ethereum]: "Ethereum",
+  [TransactionNetworks.Arbitrum]: "Arbitrum",
 };
 
 export enum TransactionStatus {
