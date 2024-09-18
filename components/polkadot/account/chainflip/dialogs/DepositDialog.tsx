@@ -1,5 +1,5 @@
 import React from "react";
-import { abbreviateAddress } from "common-crypto-tools/common";
+import { abbreviateAddress } from "common-crypto-tools";
 import { DepositAddressResponse, SwapSDK } from "@chainflip/sdk/swap";
 import { ethers } from "ethers";
 
@@ -141,7 +141,7 @@ export const DepositDialog: React.FC<WithdrawDialogProps> = ({
 
 // import React from "react";
 // import { Link } from "@nextui-org/link";
-// import { addHTMLBreaksToAddress } from "common-crypto-tools/common";
+// import { addHTMLBreaksToAddress } from "common-crypto-tools";
 // import { button as buttonStyles } from "@nextui-org/theme";
 //
 // import { Dialog, DialogBaseProps } from "@/components/Dialog/Dialog";

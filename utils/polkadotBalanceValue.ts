@@ -1,5 +1,5 @@
 import { BigNumberish } from "ethers";
-import { toBigNumber } from "common-crypto-tools/common";
+import { toBigNumber } from "common-crypto-tools";
 
 export function polkadotBalanceValue(value: BigNumberish) {
   const balance =

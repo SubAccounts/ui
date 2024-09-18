@@ -1,7 +1,7 @@
-import { polkadotExplorerUrl } from "common-crypto-tools/polkadot/index";
+import { utils } from "polkadot-typed-api";
 
 import { Chains } from "@/config/chains";
 
 export const explorers = {
-  polkadot: polkadotExplorerUrl(Chains.Polkadot),
+  polkadot: utils.polkadotExplorerUrl(Chains.Polkadot),
 };

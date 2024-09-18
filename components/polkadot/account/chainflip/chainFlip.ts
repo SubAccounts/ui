@@ -8,7 +8,7 @@ import {
   SwapSDK,
   DepositAddressResponse,
 } from "@chainflip/sdk/swap";
-import { toBigFloat } from "common-crypto-tools/common";
+import { toBigFloat } from "common-crypto-tools";
 import { ethers } from "ethers";
 
 import { Assets } from "@/components/polkadot/account/chainflip/assets";

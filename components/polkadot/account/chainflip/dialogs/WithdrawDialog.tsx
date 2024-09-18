@@ -1,5 +1,5 @@
 import React from "react";
-import { abbreviateAddress } from "common-crypto-tools/common";
+import { abbreviateAddress } from "common-crypto-tools";
 import { KeyringPair } from "@polkadot/keyring/types";
 import { DepositAddressResponse } from "@chainflip/sdk/swap";
 

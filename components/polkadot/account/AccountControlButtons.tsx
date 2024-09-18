@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "@nextui-org/button";
 import { button as buttonStyles } from "@nextui-org/theme";
 import { useStore } from "@nanostores/react";
-import { toBigNumber } from "common-crypto-tools/common";
+import { toBigNumber } from "common-crypto-tools";
 
 import {
   loadPolkadotAccount,

@@ -16,7 +16,7 @@ import clsx from "clsx";
 import { useStore } from "@nanostores/react";
 import { usePathname } from "next/dist/client/components/navigation";
 import React from "react";
-import { abbreviateAddress } from "common-crypto-tools/common";
+import { abbreviateAddress } from "common-crypto-tools";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";

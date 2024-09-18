@@ -3,7 +3,7 @@
 import React from "react";
 import { useStore } from "@nanostores/react";
 import { Link } from "@nextui-org/link";
-import { abbreviateAddress } from "common-crypto-tools/common";
+import { abbreviateAddress } from "common-crypto-tools";
 
 import {
   activeTransaction,

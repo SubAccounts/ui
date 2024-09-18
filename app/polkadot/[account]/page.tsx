@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { abbreviateAddress } from "common-crypto-tools";
 import { Link } from "@nextui-org/link";
 import { link as linkStyles } from "@nextui-org/theme";
-import { addHTMLBreaksToAddress } from "common-crypto-tools/common";
+import { addHTMLBreaksToAddress } from "common-crypto-tools";
 
 import Title from "@/components/layout/Title";
 import { subtitle, title } from "@/components/primitives";

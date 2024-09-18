@@ -1,5 +1,5 @@
 import { Link } from "@nextui-org/link";
-import { addHTMLBreaksToAddress } from "common-crypto-tools/common/index";
+import { addHTMLBreaksToAddress } from "common-crypto-tools";
 
 import { title } from "@/components/primitives";
 import { siteConfig } from "@/config/site";

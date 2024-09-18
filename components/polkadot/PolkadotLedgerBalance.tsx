@@ -3,7 +3,7 @@
 import React from "react";
 import { useStore } from "@nanostores/react";
 import { BigNumber } from "ethers";
-import { toBigNumber } from "common-crypto-tools/common";
+import { toBigNumber } from "common-crypto-tools";
 
 import { polkadotBalanceValue } from "@/utils/polkadotBalanceValue";
 import { polkadotLedgerStore } from "@/stores/polkadot/polkadotLedgerStore";

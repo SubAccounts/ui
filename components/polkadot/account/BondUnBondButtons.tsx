@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "@nextui-org/button";
 import { button as buttonStyles } from "@nextui-org/theme";
 import { useStore } from "@nanostores/react";
-import { toBigNumber } from "common-crypto-tools/common/index";
+import { toBigNumber } from "common-crypto-tools";
 
 import { polkadotLedgerStore } from "@/stores/polkadot/polkadotLedgerStore";
 import { BondDialog } from "@/components/polkadot/account/BondDialog";

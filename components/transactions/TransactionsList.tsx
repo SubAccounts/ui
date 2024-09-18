@@ -1,8 +1,8 @@
 import React from "react";
 import { useStore } from "@nanostores/react";
-import { polkadotExplorerUrl } from "common-crypto-tools/polkadot";
+import { utils } from "polkadot-typed-api";
 import { Link } from "@nextui-org/link";
-import { abbreviateAddress } from "common-crypto-tools/common";
+import { abbreviateAddress } from "common-crypto-tools";
 import clsx from "clsx";
 
 import { HeadCell } from "@/components/table/HeadCell";
@@ -21,7 +21,7 @@ type TransactionsListProps = {
   //
 };
 
-const _polkadotExplorerUrl = polkadotExplorerUrl("polkadot");
+const _polkadotExplorerUrl = utils.polkadotExplorerUrl("polkadot");
 
 function explorerUrl(
   address: string,

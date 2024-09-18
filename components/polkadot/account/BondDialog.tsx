@@ -1,6 +1,6 @@
 import React from "react";
 import { KeyringPair } from "@polkadot/keyring/types";
-import { toBigFloat } from "common-crypto-tools/common";
+import { toBigFloat } from "common-crypto-tools";
 import { useStore } from "@nanostores/react";
 
 import { Dialog, DialogBaseProps } from "@/components/Dialog/Dialog";

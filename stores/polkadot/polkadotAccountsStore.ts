@@ -1,13 +1,15 @@
 import { atom } from "nanostores";
-import { api } from "common-crypto-tools/polkadot";
-import { System_Account_Json } from "common-crypto-tools/types/polkadot";
-import { toBigNumber } from "common-crypto-tools/common/index";
+import { api, types } from "polkadot-typed-api";
+import { toBigNumber } from "common-crypto-tools";
 
 import { loadApiPromise } from "@/stores/polkadot/polkadotApiPromise";
 import { withRequestTimeout } from "@/stores/helpers/withRequestTimeout";
 
-type System_Account_Json_Updated = Omit<System_Account_Json, "data"> & {
-  data: System_Account_Json["data"] & {
+type System_Account_Json_Updated = Omit<
+  types.api.query.system.System_Account_Json,
+  "data"
+> & {
+  data: types.api.query.system.System_Account_Json["data"] & {
     transferable: string;
   };
 };
@@ -19,10 +21,8 @@ export const polkadotAccountsStore = atom<
 export async function loadPolkadotAccount(account: string) {
   await withRequestTimeout(`balance_${account}`, async function () {
     const apiPromise = await loadApiPromise();
-    const accountData: System_Account_Json = await api.query.system.account(
-      apiPromise,
-      account,
-    );
+    const accountData: types.api.query.system.System_Account_Json | null =
+      await api.query.system.account(apiPromise, account);
 
     if (accountData) {
       const _accountData: System_Account_Json_Updated = {

@@ -1,7 +1,7 @@
 import React from "react";
 import debounce from "lodash.debounce";
 import { useStore } from "@nanostores/react";
-import { toBigFloat } from "common-crypto-tools/common";
+import { toBigFloat } from "common-crypto-tools";
 
 import { titleH3 } from "@/components/primitives";
 import { Input } from "@/components/common/Input";
