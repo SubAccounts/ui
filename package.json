@@ -52,7 +52,7 @@
 		"nanostores": "^0.11.2",
 		"next": "14.2.9",
 		"next-themes": "^0.2.1",
-		"polkadot-typed-api": "^1.0.2",
+		"polkadot-typed-api": "1.2.2",
 		"prettier": "^3.3.3",
 		"react": "18.3.1",
 		"react-dom": "18.3.1",

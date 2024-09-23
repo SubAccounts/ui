@@ -3,14 +3,13 @@ import debounce from "lodash.debounce";
 import { useStore } from "@nanostores/react";
 import { toBigFloat } from "common-crypto-tools";
 
-import { titleH3 } from "@/components/primitives";
-import { Input } from "@/components/common/Input";
 import {
   Assets,
   AssetsNames,
 } from "@/components/polkadot/account/chainflip/assets";
 import { accountBalance } from "@/stores/erc20Store";
 import { polkadotAccountsStore } from "@/stores/polkadot/polkadotAccountsStore";
+import { InputWithTitle } from "@/components/common/InputWithTitle";
 
 type AmountInputProps = {
   account: string;
@@ -22,7 +21,7 @@ type AmountInputProps = {
 };
 
 const MinValues: Record<Assets, string> = {
-  [Assets.DOT]: "4",
+  [Assets.DOT]: "0",
   [Assets.USDC]: "4",
   [Assets.ETH]: "0.001",
 };
@@ -67,7 +66,7 @@ export const AmountInput: React.FC<AmountInputProps> = ({
   }, [internalValue]);
 
   React.useEffect(() => {
-    if (action === "withdraw") {
+    if (action === "withdraw" || action === "transfer") {
       set_minValue(MinValues[Assets.DOT]);
       const accountBalances = $polkadotAccountsStore[account];
 
@@ -90,19 +89,15 @@ export const AmountInput: React.FC<AmountInputProps> = ({
   }, [action, asset]);
 
   return (
-    <>
-      <h3 className={titleH3({ size: "sm" })}>Amount</h3>
-      <div className="flex flex-col w-full items-start justify-start">
-        <Input
-          disabled={disabled}
-          id="amount"
-          label={`Amount of ${AssetsNames[asset]} to ${action}`}
-          placeholder="xxx"
-          type="number"
-          value={internalValue}
-          onChange={updateValue}
-        />
-      </div>
-    </>
+    <InputWithTitle
+      disabled={disabled}
+      id="amount"
+      label={`Amount of ${AssetsNames[asset]} to ${action}`}
+      placeholder="xxx"
+      title="Amount"
+      type="number"
+      value={internalValue}
+      onChange={updateValue}
+    />
   );
 };

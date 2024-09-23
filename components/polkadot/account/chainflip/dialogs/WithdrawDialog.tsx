@@ -10,7 +10,7 @@ import { useToggleHandler } from "@/hooks/useToggleHandler";
 import { loadApiPromise } from "@/stores/polkadot/polkadotApiPromise";
 import { addPolkadotTransaction } from "@/stores/transactions";
 import { ChainFlipDialog } from "@/components/polkadot/account/chainflip/dialogs/ChainFlipDialog";
-import { WithdrawControls } from "@/components/polkadot/account/chainflip/controls/WithdrawControls";
+import { PoladotAccountDialogControls } from "@/components/polkadot/account/chainflip/controls/PoladotAccountDialogControls";
 import {
   init,
   prepareRequestData,
@@ -104,7 +104,7 @@ export const WithdrawDialog: React.FC<WithdrawDialogProps> = ({
       amount={amount}
       asset={asset}
       controls={
-        <WithdrawControls
+        <PoladotAccountDialogControls
           actionText={"Withdraw"}
           disabled={actionIsDisabled}
           unlockedAccount={unlockedAccount}

@@ -13,6 +13,7 @@ import {
 import { DepositDialog } from "@/components/polkadot/account/chainflip/dialogs/DepositDialog";
 import { WithdrawDialog } from "@/components/polkadot/account/chainflip/dialogs/WithdrawDialog";
 import { useToggleHandler } from "@/hooks/useToggleHandler";
+import { TransferDialog } from "@/components/polkadot/account/chainflip/dialogs/TransferDialog";
 
 type AccountControlButtonsProps = {
   account: string;
@@ -29,6 +30,8 @@ export const AccountControlButtons: React.FC<AccountControlButtonsProps> = ({
   const [depositModalIsOpen, toggleDepositModalIsOpen] =
     useToggleHandler(false);
   const [withdrawModalIsOpen, toggleWithdrawModalIsOpen] =
+    useToggleHandler(false);
+  const [transferModalIsOpen, toggleTransferModalIsOpen] =
     useToggleHandler(false);
   const $polkadotAccountsStore = useStore(polkadotAccountsStore);
 
@@ -64,6 +67,11 @@ export const AccountControlButtons: React.FC<AccountControlButtonsProps> = ({
         isOpen={withdrawModalIsOpen}
         onClose={toggleWithdrawModalIsOpen(false)}
       />
+      <TransferDialog
+        account={account}
+        isOpen={transferModalIsOpen}
+        onClose={toggleTransferModalIsOpen(false)}
+      />
       <div
         className="
         flex w-full
@@ -90,6 +98,18 @@ export const AccountControlButtons: React.FC<AccountControlButtonsProps> = ({
           onClick={toggleWithdrawModalIsOpen(true)}
         >
           Withdraw
+        </Button>
+        <Button
+          className={buttonStyles({
+            variant: "bordered",
+            radius: "sm",
+            color: "success",
+            isDisabled: !isNotZeroBalance,
+          })}
+          disabled={!isNotZeroBalance}
+          onClick={toggleTransferModalIsOpen(true)}
+        >
+          Transfer
         </Button>
       </div>
     </>

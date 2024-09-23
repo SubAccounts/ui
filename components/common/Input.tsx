@@ -1,7 +1,7 @@
 import React from "react";
 import { Input as _Input } from "@nextui-org/react";
 
-type InputProps = {
+export type InputProps = {
   label: string;
   value: string;
   type?: "text" | "number" | "password";

@@ -150,7 +150,7 @@ export async function addPolkadotTransaction(
           addTransaction({
             signer: signer.address,
             hash,
-            network: TransactionNetworks.Sepolia,
+            network: TransactionNetworks.Polkadot,
             status: TransactionStatus.Success,
             name,
             owner,
@@ -169,7 +169,7 @@ export async function addPolkadotTransaction(
           addTransaction({
             signer: signer.address,
             hash,
-            network: TransactionNetworks.Sepolia,
+            network: TransactionNetworks.Polkadot,
             status: TransactionStatus.Error,
             name,
             owner,

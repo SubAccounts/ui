@@ -1,5 +1,6 @@
 import React from "react";
 import { KeyringPair } from "@polkadot/keyring/types";
+import { Button } from "@nextui-org/react";
 
 import { buttonStyles } from "@/utils/ui/buttonStyles";
 import { UnlockAndRestoreAccount } from "@/components/UnlockAndRestoreAccount";
@@ -13,7 +14,7 @@ type ControlsProps = {
   onSend: () => void | Promise<void>;
 };
 
-export const WithdrawControls: React.FC<ControlsProps> = ({
+export const PoladotAccountDialogControls: React.FC<ControlsProps> = ({
   unlockedAccount,
   onClose,
   disabled,
@@ -23,15 +24,9 @@ export const WithdrawControls: React.FC<ControlsProps> = ({
 }) => {
   return (
     <div className="flex items-end gap-4">
-      <button
-        className={buttonStyles({
-          variant: "bordered",
-          radius: "sm",
-        })}
-        onClick={onClose}
-      >
+      <Button color="default" variant="bordered" onClick={onClose}>
         Close
-      </button>
+      </Button>
       {unlockedAccount ? (
         <button
           className={buttonStyles({
