@@ -118,67 +118,72 @@ export async function addPolkadotTransaction(
   name: string,
   owner: string,
 ): Promise<boolean> {
-  isSendingNow.set(true);
+  setSendingStatus(true);
 
   let hash: string;
 
   return new Promise((resolve) => {
     console.log("Submitting");
-    setSendingStatus(true);
-    extrinsic.signAndSend(signer, (result) => {
-      console.log("Status", result.status.type);
-      if (result.status.isReady) {
-        hash = result.txHash.toHuman() as string;
-        addTransaction({
-          signer: signer.address,
-          hash,
-          network: TransactionNetworks.Polkadot,
-          name,
-          owner,
-        });
-      }
-      if (hash && result.status.isBroadcast) {
-        updateTransactionStatus(hash, TransactionStatus.Broadcast);
-      }
-      if (hash && result.status.isInBlock) {
-        updateTransactionStatus(hash, TransactionStatus.InBlock);
-      }
-      if (result.status.isFinalized || result.status.isRetracted) {
-        if (hash) {
-          updateTransactionStatus(hash, TransactionStatus.Success);
-        } else {
+    try {
+      extrinsic.signAndSend(signer, (result) => {
+        console.log("Status", result.status.type);
+        if (result.status.isReady) {
+          hash = result.txHash.toHuman() as string;
           addTransaction({
             signer: signer.address,
             hash,
             network: TransactionNetworks.Polkadot,
-            status: TransactionStatus.Success,
             name,
             owner,
           });
         }
-        resolve(true);
-        setSendingStatus(false);
-      } else if (
-        result.status.isInvalid ||
-        result.status.isRetracted ||
-        result.status.isDropped
-      ) {
-        if (hash) {
-          updateTransactionStatus(hash, TransactionStatus.Error);
-        } else {
-          addTransaction({
-            signer: signer.address,
-            hash,
-            network: TransactionNetworks.Polkadot,
-            status: TransactionStatus.Error,
-            name,
-            owner,
-          });
+        if (hash && result.status.isBroadcast) {
+          updateTransactionStatus(hash, TransactionStatus.Broadcast);
         }
-        resolve(false);
-        setSendingStatus(false);
-      }
-    });
+        if (hash && result.status.isInBlock) {
+          updateTransactionStatus(hash, TransactionStatus.InBlock);
+        }
+        if (result.status.isFinalized || result.status.isRetracted) {
+          if (hash) {
+            updateTransactionStatus(hash, TransactionStatus.Success);
+          } else {
+            addTransaction({
+              signer: signer.address,
+              hash,
+              network: TransactionNetworks.Polkadot,
+              status: TransactionStatus.Success,
+              name,
+              owner,
+            });
+          }
+          resolve(true);
+          setSendingStatus(false);
+        } else if (
+          result.status.isInvalid ||
+          result.status.isRetracted ||
+          result.status.isDropped
+        ) {
+          if (hash) {
+            updateTransactionStatus(hash, TransactionStatus.Error);
+          } else {
+            addTransaction({
+              signer: signer.address,
+              hash,
+              network: TransactionNetworks.Polkadot,
+              status: TransactionStatus.Error,
+              name,
+              owner,
+            });
+          }
+          resolve(false);
+          setSendingStatus(false);
+        }
+      });
+    } catch (e) {
+      console.log(e);
+      setSendingStatus(false);
+      resolve(false);
+    }
   });
 }
 

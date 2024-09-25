@@ -1,0 +1,45 @@
+.transparentOutlinedText {
+  white-space: pre;
+  font-size: 128px;
+  color: #000;
+  text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
+  border-top: 1px solid #ffffff;
+}
+
+:global(.light) .transparentOutlinedText {
+    color: #fff;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    border-top: 1px solid #000;
+
+}
+
+.active {
+  .transparentOutlinedText {
+    &:nth-child(2n - 1) {
+      animation: toLeft 30s ease forwards;
+    }
+
+    &:nth-child(2n) {
+      margin-left: -100%;
+      animation: toRight 30s ease forwards;
+    }
+  }
+}
+
+@keyframes toLeft {
+  from {
+    margin-left: 0;
+  }
+  to {
+    margin-left: -100%;
+  }
+}
+
+@keyframes toRight {
+  from {
+    margin-left: -100%;
+  }
+  to {
+    margin-left: 0;
+  }
+}

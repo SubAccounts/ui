@@ -1,10 +1,10 @@
 import React from "react";
 import { DepositAddressResponse } from "@chainflip/sdk/swap";
 
-import { AssetSelector } from "@/components/polkadot/account/chainflip/components/AssetSelector";
+import { AssetSelector } from "@/components/polkadot/account/components/AssetSelector";
 import { Assets } from "@/components/polkadot/account/chainflip/assets";
 import { Toggler } from "@/hooks/useToggleHandler";
-import { AmountInput } from "@/components/polkadot/account/chainflip/components/AmountInput";
+import { AmountInput } from "@/components/polkadot/account/components/AmountInput";
 import { QuotesDisplay } from "@/components/polkadot/account/chainflip/components/QuotesDisplay";
 import { Dialog, DialogBaseProps } from "@/components/Dialog/Dialog";
 import { DepositChannelInfo } from "@/components/polkadot/account/chainflip/components/DepositChannelInfo";
@@ -78,6 +78,7 @@ export const ChainFlipDialog: React.FC<ChainFlipDialogProps> = ({
           action={action}
           asset={action === "withdraw" ? Assets.DOT : asset}
           disabled={loading}
+          title="Amount"
           value={amount}
           onChange={onAmountChange}
         />

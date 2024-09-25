@@ -10,6 +10,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { ActiveTransactionWidget } from "@/components/transactions/ActiveTransactionWidget";
 import { Web3OnboardProvider } from "@/utils/web3-onboard/Web3Onboard.provider";
+import { BackGround } from "@/components/layout/BackGround";
 
 export const metadata: Metadata = {
   title: {
@@ -43,6 +44,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
+        <BackGround />
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <Web3OnboardProvider>
             <div className="relative flex flex-col h-screen">

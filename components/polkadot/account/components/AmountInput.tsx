@@ -18,6 +18,7 @@ type AmountInputProps = {
   asset: Assets;
   action: string;
   disabled: boolean;
+  title?: string;
 };
 
 const MinValues: Record<Assets, string> = {
@@ -33,6 +34,7 @@ export const AmountInput: React.FC<AmountInputProps> = ({
   action,
   account,
   disabled,
+  title,
 }) => {
   const $polkadotAccountsStore = useStore(polkadotAccountsStore);
   const $accountBalance = useStore(accountBalance);
@@ -94,7 +96,7 @@ export const AmountInput: React.FC<AmountInputProps> = ({
       id="amount"
       label={`Amount of ${AssetsNames[asset]} to ${action}`}
       placeholder="xxx"
-      title="Amount"
+      title={title}
       type="number"
       value={internalValue}
       onChange={updateValue}

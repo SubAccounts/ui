@@ -10,7 +10,7 @@ import { useToggleHandler } from "@/hooks/useToggleHandler";
 import { loadApiPromise } from "@/stores/polkadot/polkadotApiPromise";
 import { addPolkadotTransaction } from "@/stores/transactions";
 import { ChainFlipDialog } from "@/components/polkadot/account/chainflip/dialogs/ChainFlipDialog";
-import { PoladotAccountDialogControls } from "@/components/polkadot/account/chainflip/controls/PoladotAccountDialogControls";
+import { PoladotAccountDialogControls } from "@/components/polkadot/account/components/PoladotAccountDialogControls";
 import {
   init,
   prepareRequestData,

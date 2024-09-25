@@ -1,7 +1,7 @@
-import { Link } from "@nextui-org/link";
-import { button as buttonStyles } from "@nextui-org/theme";
+import { Link } from "@nextui-org/react";
 
 import { title, subtitle } from "@/components/primitives";
+import { OrangeButton } from "@/components/buttons/OrangeButton";
 
 export default function Home() {
   return (
@@ -18,16 +18,9 @@ export default function Home() {
         </div>
 
         <div className="flex gap-2">
-          <Link
-            className={buttonStyles({
-              color: "primary",
-              radius: "full",
-              variant: "shadow",
-            })}
-            href="/polkadot"
-          >
+          <OrangeButton as={Link} href="/polkadot" size="lg">
             Stake now
-          </Link>
+          </OrangeButton>
         </div>
 
         {/*<div className="flex gap-3">*/}

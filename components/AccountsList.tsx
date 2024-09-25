@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { button as buttonStyles } from "@nextui-org/theme";
 import { Link } from "@nextui-org/link";
 import { Snippet } from "@nextui-org/snippet";
 import { abbreviateAddress } from "common-crypto-tools";
@@ -9,49 +8,18 @@ import { useRouter } from "next/navigation";
 
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
 import { titleH2 } from "@/components/primitives";
-import { EncodedSubAccount } from "@/types";
-import { getAccountAddressForNetwork } from "@/utils/polkadot/getAccountAddressForNetwork";
-import { loadPolkadotAccount } from "@/stores/polkadot/polkadotAccountsStore";
 import { PolkadotAccountBalance } from "@/components/polkadot/PolkadotAccountBalance";
-import { Chains } from "@/config/chains";
+import { OrangeButton } from "@/components/buttons/OrangeButton";
+import { useSubAccountsBalanceLoad } from "@/hooks/useSubAccountsBalanceLoad";
 
 type AccountsListProps = {
   network: string;
 };
 
-type EncodedSubWalletWithNetworkAddress = EncodedSubAccount & {
-  networkAddress: string;
-};
-
 export const AccountsList: React.FC<AccountsListProps> = ({ network }) => {
+  const accounts = useSubAccountsBalanceLoad(network);
   const router = useRouter();
   const web3 = useWeb3Onboard();
-
-  const accounts: EncodedSubWalletWithNetworkAddress[] = [
-    ...web3.encodedSubAccounts,
-  ]
-    .filter((e) => e.network === network)
-    .map((e) => {
-      let networkAddress = e.address;
-
-      if (network === Chains.Polkadot) {
-        networkAddress = getAccountAddressForNetwork(
-          e.address,
-          Chains.Polkadot,
-        );
-      }
-
-      return {
-        ...e,
-        networkAddress,
-      };
-    });
-
-  React.useEffect(() => {
-    accounts.forEach((account) => {
-      void loadPolkadotAccount(account.networkAddress);
-    });
-  }, [accounts.map((e) => e.networkAddress).join("")]);
 
   useEffect(() => {
     web3.reload();
@@ -106,16 +74,9 @@ export const AccountsList: React.FC<AccountsListProps> = ({ network }) => {
         flex w-full
         items-center justify-start gap-4"
       >
-        <Link
-          className={buttonStyles({
-            variant: "bordered",
-            radius: "sm",
-            color: "secondary",
-          })}
-          href={`/${network}/new`}
-        >
+        <OrangeButton as={Link} href={`/${network}/new`} size="lg">
           Create new one
-        </Link>
+        </OrangeButton>
       </div>
     </>
   );

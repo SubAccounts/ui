@@ -13,7 +13,7 @@ import {
 import { DepositDialog } from "@/components/polkadot/account/chainflip/dialogs/DepositDialog";
 import { WithdrawDialog } from "@/components/polkadot/account/chainflip/dialogs/WithdrawDialog";
 import { useToggleHandler } from "@/hooks/useToggleHandler";
-import { TransferDialog } from "@/components/polkadot/account/chainflip/dialogs/TransferDialog";
+import { TransferDialog } from "@/components/polkadot/account/dialogs/TransferDialog";
 
 type AccountControlButtonsProps = {
   account: string;
@@ -25,8 +25,6 @@ let withdrawModalWasOpen = false;
 export const AccountControlButtons: React.FC<AccountControlButtonsProps> = ({
   account,
 }) => {
-  // const [depositModalIsOpen, set_depositModalIsOpen] =
-  //   React.useState<boolean>(false);
   const [depositModalIsOpen, toggleDepositModalIsOpen] =
     useToggleHandler(false);
   const [withdrawModalIsOpen, toggleWithdrawModalIsOpen] =
