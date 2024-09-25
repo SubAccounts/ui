@@ -56,11 +56,12 @@ export default function WhitePaperPage() {
             <li>The wallet data is formatted into JSON.</li>
             <li>This JSON is encrypted using a password chosen by the user.</li>
             <li>
-              The resulting encrypted string is further encrypted using the AES
-              algorithm and second password chosen by the user.
+              The resulting encrypted string is further encrypted using the
+              encryption algorithm (ex.: AES algorithm) and second password
+              chosen by the user or using cloud encryption (ex.: Google Auth).
             </li>
             <li>
-              Finally, the AES-encrypted string is encrypted with the user’s
+              Finally, the encrypted string is encrypted with the user’s
               Ethereum public key, ensuring that only the user can decrypt it
               using their Ethereum private key.
             </li>
@@ -71,7 +72,8 @@ export default function WhitePaperPage() {
           smart contract on the blockchain, ensuring immutability and
           transparency. While anyone can access this data, it is effectively
           unreadable without the correct decryption credentials, which include
-          two passwords and access to the user’s Ethereum private key.
+          passwords, social decryption and access to the user’s Ethereum private
+          key.
         </li>
         <li>
           <b>Cross-Network Compatibility:</b> Although the primary focus is on
@@ -90,7 +92,7 @@ export default function WhitePaperPage() {
         </li>
       </ul>
       <h2 className={title({ size: "md" })}>Technical Architecture</h2>
-      <h3 className={title({ size: "sm" })}>Encryption Flow</h3>
+      <h3 className={title({ size: "sm" })}>Encryption Flow [current]</h3>
       <ul className="list-decimal">
         <li>
           <b>Wallet Creation:</b> The Polkadot wallet is created within the
@@ -159,12 +161,9 @@ export default function WhitePaperPage() {
           user-friendly.
         </li>
         <li>
-          <b>
-            Deploying the Smart Contract in Other EVM Networks (First Target:
-          </b>{" "}
-          Binance Smart Chain): Expanding the platform to other EVM-compatible
-          networks, starting with BSC. This will provide users with more options
-          to leverage familiar tools in their preferred networks.
+          <b>Deploying the Smart Contract to Ethereum Mainnet:</b> This will
+          provide users with more options to leverage familiar tools in their
+          preferred network.
         </li>
         <li>
           <b>
