@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button } from "@nextui-org/button";
-import { button as buttonStyles } from "@nextui-org/theme";
+import { Button } from "@nextui-org/react";
 import { useStore } from "@nanostores/react";
 import { toBigNumber } from "common-crypto-tools";
 
@@ -14,6 +13,7 @@ import { DepositDialog } from "@/components/polkadot/account/chainflip/dialogs/D
 import { WithdrawDialog } from "@/components/polkadot/account/chainflip/dialogs/WithdrawDialog";
 import { useToggleHandler } from "@/hooks/useToggleHandler";
 import { TransferDialog } from "@/components/polkadot/account/dialogs/TransferDialog";
+import { OrangeButton } from "@/components/buttons/OrangeButton";
 
 type AccountControlButtonsProps = {
   account: string;
@@ -73,42 +73,33 @@ export const AccountControlButtons: React.FC<AccountControlButtonsProps> = ({
       <div
         className="
         flex w-full
-        items-start justify-start gap-4"
+        items-center justify-start gap-2"
       >
         <Button
-          className={buttonStyles({
-            variant: "bordered",
-            radius: "sm",
-            color: "primary",
-          })}
+          color="success"
+          size="sm"
+          variant="bordered"
           onClick={toggleDepositModalIsOpen(true)}
         >
           Deposit
         </Button>
         <Button
-          className={buttonStyles({
-            variant: "bordered",
-            radius: "sm",
-            color: "secondary",
-            isDisabled: !isNotZeroBalance,
-          })}
+          color="primary"
           disabled={!isNotZeroBalance}
+          size="sm"
+          variant="bordered"
           onClick={toggleWithdrawModalIsOpen(true)}
         >
           Withdraw
         </Button>
-        <Button
-          className={buttonStyles({
-            variant: "bordered",
-            radius: "sm",
-            color: "success",
-            isDisabled: !isNotZeroBalance,
-          })}
+        <OrangeButton
           disabled={!isNotZeroBalance}
+          size="sm"
+          variant="bordered"
           onClick={toggleTransferModalIsOpen(true)}
         >
           Transfer
-        </Button>
+        </OrangeButton>
       </div>
     </>
   );

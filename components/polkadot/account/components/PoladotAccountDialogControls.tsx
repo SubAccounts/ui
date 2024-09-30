@@ -24,7 +24,12 @@ export const PoladotAccountDialogControls: React.FC<ControlsProps> = ({
 }) => {
   return (
     <div className="flex items-end gap-4">
-      <Button color="default" variant="bordered" onClick={onClose}>
+      <Button
+        color="default"
+        disabled={disabled}
+        variant="bordered"
+        onClick={onClose}
+      >
         Close
       </Button>
       {unlockedAccount ? (

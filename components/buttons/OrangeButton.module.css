@@ -1,0 +1,9 @@
+.container {
+    padding: 2px;
+}
+
+.child {
+    height: 28px!important;
+    border-radius: 7px!important;
+    /* add other sizes */
+}

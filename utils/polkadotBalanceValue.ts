@@ -1,16 +1,18 @@
 import { BigNumberish } from "ethers";
-import { toBigNumber } from "common-crypto-tools";
+import { toBigFloat } from "common-crypto-tools";
 
-export function polkadotBalanceValue(value: BigNumberish) {
-  const balance =
-    typeof value !== "undefined"
-      ? value
-        ? toBigNumber(value)
-            .div(10 ** 8)
-            .toNumber() /
-          10 ** 2
-        : 0
-      : "...";
+import { numberFormat } from "@/utils/numberFormat";
+import { PolkadotChainConfig } from "@/config/polkadotChainConfig";
 
-  return `${balance} DOT`;
+export function polkadotBalanceValue(value: BigNumberish, decimals = 8) {
+  const balance = value
+    ? toBigFloat(`${value}`).div(PolkadotChainConfig.decimals).toString()
+    : null;
+
+  return balance
+    ? `${numberFormat(balance, {
+        minimumFractionDigits: 10 - decimals,
+        maximumFractionDigits: 10 - decimals,
+      })} DOT`
+    : "...";
 }
