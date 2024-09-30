@@ -48,6 +48,18 @@ export const Input: React.FC<InputProps> = ({
     }
   };
 
+  function onChangeHandler(value: string) {
+    if (type === "number" && max && max > 0) {
+      if (+value > max) {
+        onChange(`${max}`);
+
+        return;
+      }
+    }
+
+    onChange(value);
+  }
+
   return (
     <>
       <_Input
@@ -63,7 +75,7 @@ export const Input: React.FC<InputProps> = ({
         value={value}
         variant="bordered"
         onBlurCapture={onBlur}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChangeHandler(e.target.value)}
         onKeyDownCapture={onKeyDownCapture}
       />
     </>
