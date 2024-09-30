@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { KeyringPair } from "@polkadot/keyring/types";
 import { SubAccounts } from "sub-accounts-lib";
+import { useStore } from "@nanostores/react";
+
+import { PinCodeDialog } from "./PinCodeDialog";
+import { PinCodeForm } from "./PinCodeForm";
+import { PasswordsForm } from "./PasswordsForm";
 
 import { useSubAccount } from "@/components/polkadot/account/WithCorrectOwner";
 import { buttonStyles } from "@/utils/ui/buttonStyles";
 import { Dialog } from "@/components/Dialog/Dialog";
 import { useToggleHandler } from "@/hooks/useToggleHandler";
 import { defaultPassword } from "@/config/site";
+import {
+  accountStore,
+  setAccountToStore,
+} from "@/stores/polkadot/polkadotAccount";
+import {
+  setPinCode,
+  isPinCodeSetUp,
+  restorePasswords,
+} from "@/stores/pinCodeStore";
 
 type SendButtonProps = {
   onAccountUnlock: (account: KeyringPair) => void | Promise<void>;
@@ -15,22 +29,34 @@ type SendButtonProps = {
 export const UnlockAccountButton: React.FC<SendButtonProps> = ({
   onAccountUnlock,
 }) => {
+  const { account } = useStore(accountStore);
+  const isPinCodeExisted = isPinCodeSetUp();
   const [dialogIsOpen, toggle] = useToggleHandler();
   const { subAccount, restoredAccount } = useSubAccount();
   const [accountPassword, set_accountPassword] =
     React.useState<string>(defaultPassword);
   const [encryptionPassword, set_encryptionPassword] =
     React.useState<string>(defaultPassword);
+  const [pinCode, set_PinCode] = useState<string>("");
+
+  const [pinDialogIsOpen, togglePinDialog] = React.useState(false);
 
   function restore() {
-    if (restoredAccount) {
-      const account = SubAccounts.decrypt(
-        restoredAccount,
-        accountPassword,
-        encryptionPassword,
-      );
+    if (isPinCodeExisted) {
+      const [password1, password2] = restorePasswords(pinCode);
+      // TODO: complete logic
+    } else {
+      if (restoredAccount) {
+        const account = SubAccounts.decrypt(
+          restoredAccount,
+          accountPassword,
+          encryptionPassword,
+        );
 
-      onAccountUnlock(account);
+        setAccountToStore(account);
+        toggle(false);
+        togglePinDialog(true);
+      }
     }
   }
 
@@ -42,8 +68,27 @@ export const UnlockAccountButton: React.FC<SendButtonProps> = ({
     disabled = false;
   }
 
+  const onPinCodeChangeHandler = (pinCode: string) => {
+    setPinCode(pinCode, accountPassword, encryptionPassword);
+    if (account) {
+      onAccountUnlock(account);
+    }
+  };
+
+  const onPinCodeDialogCloseHandler = () => {
+    togglePinDialog(false);
+    if (account) {
+      onAccountUnlock(account);
+    }
+  };
+
   return (
     <>
+      <PinCodeDialog
+        isOpen={pinDialogIsOpen}
+        onClose={onPinCodeDialogCloseHandler}
+        onPinCodeChange={onPinCodeChangeHandler}
+      />
       <button
         className={buttonStyles({
           isDisabled: disabled,
@@ -88,42 +133,16 @@ export const UnlockAccountButton: React.FC<SendButtonProps> = ({
           <p>
             Restore account via Account{"'"}s and Encryption{"'"}s passwords
           </p>
-          <div className="flex flex-col w-full items-start justify-start">
-            <label
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              htmlFor="account_password"
-            >
-              Account password
-            </label>
-            <input
-              required
-              autoComplete="off"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              id="account_password"
-              placeholder="......."
-              type="password"
-              value={accountPassword}
-              onChange={(e) => set_accountPassword(e.target.value)}
+          {isPinCodeExisted ? (
+            <PinCodeForm onChange={(value) => set_PinCode(value)} />
+          ) : (
+            <PasswordsForm
+              onAccountPasswordChange={(value) => set_accountPassword(value)}
+              onEncryptionPasswordChange={(value) =>
+                set_encryptionPassword(value)
+              }
             />
-          </div>
-          <div className="flex flex-col w-full items-start justify-start">
-            <label
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              htmlFor="encryption_password"
-            >
-              Encryption password
-            </label>
-            <input
-              required
-              autoComplete="off"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              id="encryption_password"
-              placeholder="......."
-              type="password"
-              value={encryptionPassword}
-              onChange={(e) => set_encryptionPassword(e.target.value)}
-            />
-          </div>
+          )}
         </div>
       </Dialog>
     </>
