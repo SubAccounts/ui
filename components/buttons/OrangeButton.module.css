@@ -5,7 +5,5 @@
 .child {
     height: 28px!important;
     border-radius: 7px!important;
-    /*margin-top: -1px;*/
-    /*margin-bottom: -1px;*/
-    /*border-radius: calc(3.5rem - 1px);*/
+    /* add other sizes */
 }
