@@ -2,7 +2,7 @@ import React from "react";
 import { KeyringPair } from "@polkadot/keyring/types";
 
 import { useSubAccount } from "@/components/polkadot/account/WithCorrectOwner";
-import { UnlockAccountButton } from "@/components/UnlockAccountButton";
+import { UnlockAccountButton } from "@/components/UnlockAndRestore/UnlockAccountButton";
 import { buttonStyles } from "@/utils/ui/buttonStyles";
 
 type UnlockAndRestoreAccountProps = {

@@ -30,24 +30,47 @@ export const UnlockAccountButton: React.FC<SendButtonProps> = ({
   onAccountUnlock,
 }) => {
   const { account } = useStore(accountStore);
-  const isPinCodeExisted = isPinCodeSetUp();
   const [dialogIsOpen, toggle] = useToggleHandler();
-  const { subAccount, restoredAccount } = useSubAccount();
-  const [accountPassword, set_accountPassword] =
-    React.useState<string>(defaultPassword);
-  const [encryptionPassword, set_encryptionPassword] =
-    React.useState<string>(defaultPassword);
   const [pinCode, set_PinCode] = useState<string>("");
+  const { subAccount, restoredAccount } = useSubAccount();
+  const [pinDialogIsOpen, togglePinDialog] = useState(false);
+  const [accountPassword, set_accountPassword] =
+    useState<string>(defaultPassword);
+  const [encryptionPassword, set_encryptionPassword] =
+    useState<string>(defaultPassword);
 
-  const [pinDialogIsOpen, togglePinDialog] = React.useState(false);
+  const isPinCodeExisted = isPinCodeSetUp();
 
-  function restore() {
+  const getAccount = (
+    restoredAccount: string,
+    password: string,
+    encryptionPassword: string,
+  ) => {
+    return SubAccounts.decrypt(restoredAccount, password, encryptionPassword);
+  };
+
+  const restoreAccount = () => {
     if (isPinCodeExisted) {
       const [password1, password2] = restorePasswords(pinCode);
-      // TODO: complete logic
+
+      if (restoredAccount) {
+        const encryptedAccount = getAccount(
+          restoredAccount,
+          password1,
+          password2,
+        );
+
+        if (encryptedAccount.address === account?.address) {
+          onAccountUnlock(account);
+        } else {
+          console.log('Error set up pincode')
+        }
+      } else {
+        throw new Error("Restored account isn't initialized");
+      }
     } else {
       if (restoredAccount) {
-        const account = SubAccounts.decrypt(
+        const account = getAccount(
           restoredAccount,
           accountPassword,
           encryptionPassword,
@@ -58,7 +81,7 @@ export const UnlockAccountButton: React.FC<SendButtonProps> = ({
         togglePinDialog(true);
       }
     }
-  }
+  };
 
   let buttonText = "Hmm...";
   let disabled = true;
@@ -119,7 +142,7 @@ export const UnlockAccountButton: React.FC<SendButtonProps> = ({
                 radius: "sm",
                 color: "primary",
               })}
-              onClick={restore}
+              onClick={restoreAccount}
             >
               Unlock
             </button>

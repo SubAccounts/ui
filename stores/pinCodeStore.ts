@@ -1,10 +1,11 @@
 import { atom } from "nanostores";
 import AES from "crypto-js/aes";
+import CryptoJS from "crypto-js/core";
 
 // @ts-ignore
 export type PinCodeType = ReturnType<AES.encrypt>;
-export const pinCodeStore = atom<PinCodeType | string | null>(null);
 
+export const pinCodeStore = atom<PinCodeType | string | null>(null);
 export const SEPARATOR = [...Array(10)].map((e) => Math.random()).join("-");
 
 export function setPinCode(

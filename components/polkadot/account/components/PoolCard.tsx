@@ -37,8 +37,6 @@ export const PoolCard: React.FC<PoolCardProps> = ({ pool, id }) => {
     void loadPoolMetadata(id);
   }, [id]);
 
-  console.log(pool);
-
   return (
     <Card className="w-full flex bg-gray-950">
       <CardHeader className="justify-between px-4">
