@@ -19,12 +19,18 @@ export function setPinCode(
   pinCodeStore.set(encryptedHash);
 }
 
-export function restorePasswords(pinCode: string) {
-  const encryptedHash = pinCodeStore.get();
+export function restorePasswords(pinCode: string): string[] {
+  try {
+    const encryptedHash = pinCodeStore.get();
 
-  return AES.decrypt(encryptedHash, pinCode)
-    .toString(CryptoJS.enc.Utf8)
-    .split(SEPARATOR);
+    return AES.decrypt(encryptedHash, pinCode)
+      .toString(CryptoJS.enc.Utf8)
+      .split(SEPARATOR);
+  } catch (e) {
+    console.log(e);
+
+    return ["", ""];
+  }
 }
 
 export function resetPinCode() {

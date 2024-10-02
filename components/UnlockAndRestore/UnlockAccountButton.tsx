@@ -20,6 +20,7 @@ import {
   setPinCode,
   isPinCodeSetUp,
   restorePasswords,
+  resetPinCode,
 } from "@/stores/pinCodeStore";
 
 type SendButtonProps = {
@@ -38,6 +39,7 @@ export const UnlockAccountButton: React.FC<SendButtonProps> = ({
     useState<string>(defaultPassword);
   const [encryptionPassword, set_encryptionPassword] =
     useState<string>(defaultPassword);
+  const [pinCodeAttempts, set_pinCodeAttempts] = useState(3);
 
   const isPinCodeExisted = isPinCodeSetUp();
 
@@ -53,6 +55,19 @@ export const UnlockAccountButton: React.FC<SendButtonProps> = ({
     if (isPinCodeExisted) {
       const [password1, password2] = restorePasswords(pinCode);
 
+      if (password1 === "" && password2 === "") {
+        if (pinCodeAttempts === 1) {
+          resetPinCode();
+          set_pinCodeAttempts(3);
+
+          return;
+        } else {
+          set_pinCodeAttempts((prev) => prev - 1);
+
+          return;
+        }
+      }
+
       if (restoredAccount) {
         const encryptedAccount = getAccount(
           restoredAccount,
@@ -62,8 +77,6 @@ export const UnlockAccountButton: React.FC<SendButtonProps> = ({
 
         if (encryptedAccount.address === account?.address) {
           onAccountUnlock(account);
-        } else {
-          console.log('Error set up pincode')
         }
       } else {
         throw new Error("Restored account isn't initialized");
@@ -154,10 +167,17 @@ export const UnlockAccountButton: React.FC<SendButtonProps> = ({
       >
         <div className="flex w-full flex-col gap-4">
           <p>
-            Restore account via Account{"'"}s and Encryption{"'"}s passwords
+            Restore account via{" "}
+            {isPinCodeExisted
+              ? "Pin Code"
+              : `Account's and Encryption's passwords`}
           </p>
           {isPinCodeExisted ? (
-            <PinCodeForm onChange={(value) => set_PinCode(value)} />
+            <PinCodeForm
+              isLimitedAttempts
+              availableAttempts={pinCodeAttempts}
+              onChange={(value) => set_PinCode(value)}
+            />
           ) : (
             <PasswordsForm
               onAccountPasswordChange={(value) => set_accountPassword(value)}

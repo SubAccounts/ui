@@ -1,5 +1,7 @@
 import React from "react";
 
+import { defaultPassword } from "@/config/site";
+
 export type PasswordsFormProps = {
   onAccountPasswordChange: (value: string) => void;
   onEncryptionPasswordChange: (value: string) => void;
@@ -22,6 +24,7 @@ export const PasswordsForm: React.FC<PasswordsFormProps> = ({
           required
           autoComplete="off"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          defaultValue={defaultPassword}
           id="account_password"
           placeholder="......."
           type="password"
@@ -39,6 +42,7 @@ export const PasswordsForm: React.FC<PasswordsFormProps> = ({
           required
           autoComplete="off"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          defaultValue={defaultPassword}
           id="encryption_password"
           placeholder="......."
           type="password"
