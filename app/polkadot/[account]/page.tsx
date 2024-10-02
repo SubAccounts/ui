@@ -13,6 +13,7 @@ import { Chains } from "@/config/chains";
 import { PolkadotAccountBalance } from "@/components/polkadot/PolkadotAccountBalance";
 import { loadPolkadotAccount } from "@/stores/polkadot/polkadotAccountsStore";
 import { SubAccountInfo } from "@/components/polkadot/account/SubAccountInfo";
+import { resetPinCode } from "@/stores/pinCodeStore";
 
 export default function PolkadotPage({
   params: { account },
@@ -21,6 +22,7 @@ export default function PolkadotPage({
 }) {
   useEffect(() => {
     void loadPolkadotAccount(account);
+    void resetPinCode();
   }, [account]);
 
   return (

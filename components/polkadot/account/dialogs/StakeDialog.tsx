@@ -120,6 +120,7 @@ export const StakeDialog: React.FC<StakeDialogProps> = ({
   function reset() {
     set_poolId(defaultPoolId);
     set_value("");
+    unlockedAccount.set(null);
   }
 
   React.useEffect(() => {

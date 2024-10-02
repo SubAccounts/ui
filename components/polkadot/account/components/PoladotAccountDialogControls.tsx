@@ -3,7 +3,7 @@ import { KeyringPair } from "@polkadot/keyring/types";
 import { Button } from "@nextui-org/react";
 
 import { buttonStyles } from "@/utils/ui/buttonStyles";
-import { UnlockAndRestoreAccount } from "@/components/UnlockAndRestoreAccount";
+import { UnlockAndRestoreAccount } from "@/components/UnlockAndRestore/UnlockAndRestoreAccount";
 
 type ControlsProps = {
   unlockedAccount: KeyringPair | null;

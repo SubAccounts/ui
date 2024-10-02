@@ -17,7 +17,7 @@ import {
 } from "@/stores/polkadot/polkadotLedgerStore";
 import { PolkadotChainConfig } from "@/config/polkadotChainConfig";
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
-import { UnlockAndRestoreAccount } from "@/components/UnlockAndRestoreAccount";
+import { UnlockAndRestoreAccount } from "@/components/UnlockAndRestore/UnlockAndRestoreAccount";
 import { buttonStyles } from "@/utils/ui/buttonStyles";
 
 type BondDialogProps = DialogBaseProps;
