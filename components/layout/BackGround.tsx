@@ -11,6 +11,14 @@ type BackGroundProps = {
   //
 };
 
+const textLines: string[] = [
+  "ETHEREUM + POLKADOT = <3",
+  "STAKE SLEEP EARN REPEAT",
+  "HOW TO STAKE USDC TO DOT? EASY!",
+  "IN STAKE WE TRUST!",
+  "HAVE YOU EVER HEARD OF SOLANA? SOON...",
+];
+
 export const BackGround: React.FC<BackGroundProps> = () => {
   const pathname = usePathname();
 
@@ -50,28 +58,11 @@ export const BackGround: React.FC<BackGroundProps> = () => {
               },
             )}
           >
-            <p className={styles.transparentOutlinedText}>
-              ETHEREUM + POLKADOT = {"<"}3; ARBITRUM + POLKADOT = {"<"}
-              3;ETHEREUM + POLKADOT = {"<"}3; ARBITRUM + POLKADOT = {"<"}3;
-            </p>
-            <p className={styles.transparentOutlinedText}>
-              STAKE COLLECT EARN REPEAT STAKE COLLECT EARN REPEAT STAKE COLLECT{" "}
-              EARN REPEAT{" "}
-            </p>
-            <p className={styles.transparentOutlinedText}>
-              HOW TO STAKE USDC TO DOT? EASY! HOW TO STAKE USDC TO DOT? EASY!{" "}
-            </p>
-            <p className={styles.transparentOutlinedText}>
-              ETHEREUM + POLKADOT = {"<"}3; ARBITRUM + POLKADOT = {"<"}
-              3;ETHEREUM + POLKADOT = {"<"}3; ARBITRUM + POLKADOT = {"<"}3;
-            </p>
-            <p className={styles.transparentOutlinedText}>
-              STAKE COLLECT EARN REPEAT STAKE COLLECT EARN REPEAT STAKE COLLECT{" "}
-              EARN REPEAT{" "}
-            </p>
-            <p className={styles.transparentOutlinedText}>
-              HOW TO STAKE USDC TO DOT? EASY! HOW TO STAKE USDC TO DOT? EASY!{" "}
-            </p>
+            {[...textLines, ...textLines].map((line, index) => (
+              <p key={index} className={styles.transparentOutlinedText}>
+                {`${line} `.repeat(3)}
+              </p>
+            ))}
           </div>
         </div>
       )}
