@@ -174,7 +174,7 @@ export const UnlockAccountButton: React.FC<SendButtonProps> = ({
           </p>
           {isPinCodeExisted ? (
             <PinCodeForm
-              isLimitedAttempts
+              attemptsLimit={3}
               availableAttempts={pinCodeAttempts}
               onChange={(value) => set_PinCode(value)}
             />

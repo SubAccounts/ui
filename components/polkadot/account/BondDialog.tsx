@@ -1,5 +1,4 @@
 import React from "react";
-import { KeyringPair } from "@polkadot/keyring/types";
 import { toBigFloat } from "common-crypto-tools";
 import { useStore } from "@nanostores/react";
 
@@ -19,6 +18,7 @@ import { PolkadotChainConfig } from "@/config/polkadotChainConfig";
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
 import { UnlockAndRestoreAccount } from "@/components/UnlockAndRestore/UnlockAndRestoreAccount";
 import { buttonStyles } from "@/utils/ui/buttonStyles";
+import { useUnlockedAccount } from "@/hooks/useUnlockedAccount";
 
 type BondDialogProps = DialogBaseProps;
 
@@ -36,8 +36,7 @@ export const BondDialog: React.FC<BondDialogProps> = ({ isOpen, onClose }) => {
 
   const accountData = account ? $polkadotAccountsStore[subAccount] : null;
 
-  const [unlockedAccount, set_unlockedAccount] =
-    React.useState<KeyringPair | null>(null);
+  const unlockedAccount = useUnlockedAccount();
   const [value, set_value] = React.useState<string>(defaultValue);
   const [rewardsDestination, set_rewardsDestination] = React.useState<string>(
     defaultRewardsDestination,
@@ -67,8 +66,7 @@ export const BondDialog: React.FC<BondDialogProps> = ({ isOpen, onClose }) => {
   }
 
   async function sendTransaction() {
-    if (unlockedAccount && web3.wallet) {
-      console.log(unlockedAccount);
+    if (unlockedAccount.value && web3.wallet) {
       const ledgerData = $polkadotLedgerStore[subAccount];
       const apiPromise = await loadApiPromise();
 
@@ -83,7 +81,7 @@ export const BondDialog: React.FC<BondDialogProps> = ({ isOpen, onClose }) => {
       set_loading(true);
       addPolkadotTransaction(
         extrinsic,
-        unlockedAccount,
+        unlockedAccount.value,
         "Bond",
         web3.wallet.accounts[0].address,
       ).then((result) => {
@@ -97,7 +95,7 @@ export const BondDialog: React.FC<BondDialogProps> = ({ isOpen, onClose }) => {
         set_loading(false);
       });
 
-      set_unlockedAccount(null);
+      unlockedAccount.set(null);
     }
   }
 
@@ -119,13 +117,11 @@ export const BondDialog: React.FC<BondDialogProps> = ({ isOpen, onClose }) => {
     }
   }, [enoughToDirectStake]);
 
-  // if (accountData && value + toBigFloat(accountData.data.frozen) )
-
   return (
     <Dialog
       footer={
         <div className="flex items-end gap-4">
-          {unlockedAccount ? (
+          {unlockedAccount.value ? (
             <button
               className={buttonStyles({
                 variant: "bordered",
@@ -141,7 +137,7 @@ export const BondDialog: React.FC<BondDialogProps> = ({ isOpen, onClose }) => {
           ) : (
             <UnlockAndRestoreAccount
               restoreButtonIsDisabled={polkadotValue.lte(0) || $isSendingNow}
-              onUnlock={set_unlockedAccount}
+              onUnlock={unlockedAccount.set}
             />
           )}
         </div>

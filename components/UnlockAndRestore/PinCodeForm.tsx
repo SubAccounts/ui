@@ -1,13 +1,13 @@
 import React from "react";
 
 export type PinCodeFormProps = {
-  isLimitedAttempts: boolean;
+  attemptsLimit: number;
   onChange: (value: string) => void;
-  availableAttempts?: number;
+  availableAttempts: number;
 };
 
 export const PinCodeForm: React.FC<PinCodeFormProps> = ({
-  isLimitedAttempts = false,
+  attemptsLimit,
   onChange,
   availableAttempts,
 }) => {
@@ -28,7 +28,7 @@ export const PinCodeForm: React.FC<PinCodeFormProps> = ({
         type="password"
         onChange={(e) => onChange(e.target.value)}
       />
-      {isLimitedAttempts && (
+      {availableAttempts < attemptsLimit && (
         <p className="block mt-4 text-sm font-medium text-gray-900 dark:text-[#F31260]">
           Attempts left: {availableAttempts}
         </p>
