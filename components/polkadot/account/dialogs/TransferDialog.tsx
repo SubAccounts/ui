@@ -1,5 +1,4 @@
 import React from "react";
-import { KeyringPair } from "@polkadot/keyring/types";
 import { toBigFloat, toBigNumber } from "common-crypto-tools";
 import { useStore } from "@nanostores/react";
 import { api } from "polkadot-typed-api";
@@ -24,6 +23,7 @@ import { AccountSelector } from "@/components/polkadot/account/components/Accoun
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
 import { addPolkadotTransaction } from "@/stores/transactions";
 import { loadPolkadotLedger } from "@/stores/polkadot/polkadotLedgerStore";
+import { useUnlockedAccount } from "@/hooks/useUnlockedAccount";
 
 type TransferDialogProps = DialogBaseProps & {
   account: string;
@@ -42,8 +42,9 @@ export const TransferDialog: React.FC<TransferDialogProps> = ({
   const [destination, set_destination] = React.useState<string>("");
   const [loading, toggleLoading] = useToggleHandler(false);
   const [allowDeath, toggleAllowDeath] = useToggleHandler(false);
-  const [unlockedAccount, set_unlockedAccount] =
-    React.useState<KeyringPair | null>(null);
+
+  const unlockedAccount = useUnlockedAccount();
+
   const accounts = useSubAccountsBalanceLoad(Chains.Polkadot);
   const $polkadotAccountsStore = useStore(polkadotAccountsStore);
 
@@ -51,6 +52,7 @@ export const TransferDialog: React.FC<TransferDialogProps> = ({
     if (!loading) {
       set_destination("");
       set_value("0");
+      unlockedAccount.set(null);
       toggleLoading(false, true);
       onClose();
     }
@@ -84,7 +86,7 @@ export const TransferDialog: React.FC<TransferDialogProps> = ({
   }
 
   async function onTransfer() {
-    if (unlockedAccount && web3.currentAccountAddress) {
+    if (unlockedAccount.value && web3.currentAccountAddress) {
       const apiPromise = await loadApiPromise();
       let extrinsic = await api.tx.balances.transferAll(
         apiPromise,
@@ -112,7 +114,7 @@ export const TransferDialog: React.FC<TransferDialogProps> = ({
       try {
         addPolkadotTransaction(
           extrinsic,
-          unlockedAccount,
+          unlockedAccount.value,
           "Transfer",
           web3.currentAccountAddress,
         )
@@ -122,7 +124,7 @@ export const TransferDialog: React.FC<TransferDialogProps> = ({
               onCloseHandler();
             }
 
-            set_unlockedAccount(null);
+            unlockedAccount.set(null);
           })
           .catch((e) => {
             console.error("!", e);
@@ -164,8 +166,8 @@ export const TransferDialog: React.FC<TransferDialogProps> = ({
         <PoladotAccountDialogControls
           actionText={txName}
           disabled={actionIsDisabled}
-          unlockedAccount={unlockedAccount}
-          updateUnlockedAccount={set_unlockedAccount}
+          unlockedAccount={unlockedAccount.value}
+          updateUnlockedAccount={unlockedAccount.set}
           onClose={onCloseHandler}
           onSend={onTransfer}
         />

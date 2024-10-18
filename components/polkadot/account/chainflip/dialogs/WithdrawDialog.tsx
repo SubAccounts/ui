@@ -1,6 +1,5 @@
 import React from "react";
 import { abbreviateAddress } from "common-crypto-tools";
-import { KeyringPair } from "@polkadot/keyring/types";
 import { DepositAddressResponse } from "@chainflip/sdk/swap";
 
 import { Assets } from "@/components/polkadot/account/chainflip/assets";
@@ -16,6 +15,7 @@ import {
   prepareRequestData,
   requestDepositChannel,
 } from "@/components/polkadot/account/chainflip/chainFlip";
+import { useUnlockedAccount } from "@/hooks/useUnlockedAccount";
 
 type WithdrawDialogProps = DialogBaseProps & {
   account: string;
@@ -31,8 +31,7 @@ export const WithdrawDialog: React.FC<WithdrawDialogProps> = ({
   const [asset, set_asset] = React.useState<Assets>(Assets.USDC);
   const [status, set_status] = React.useState<string>("");
   const [loading, toggleLoading] = useToggleHandler(false);
-  const [unlockedAccount, set_unlockedAccount] =
-    React.useState<KeyringPair | null>(null);
+  const unlockedAccount = useUnlockedAccount();
   const { currentAccountAddress } = useWeb3Onboard();
   const [depositChannel, set_depositChannel] =
     React.useState<DepositAddressResponse | null>(null);
@@ -40,7 +39,7 @@ export const WithdrawDialog: React.FC<WithdrawDialogProps> = ({
   const [hasQuotes, set_hasQuotes] = React.useState<boolean>(false);
 
   async function sendTransaction() {
-    if (currentAccountAddress && unlockedAccount) {
+    if (currentAccountAddress && unlockedAccount.value) {
       set_status("Creating deposit channel");
 
       const {
@@ -78,7 +77,7 @@ export const WithdrawDialog: React.FC<WithdrawDialogProps> = ({
 
         const result = await addPolkadotTransaction(
           extrinsic,
-          unlockedAccount,
+          unlockedAccount.value,
           "Withdraw",
           currentAccountAddress,
         );
@@ -107,8 +106,8 @@ export const WithdrawDialog: React.FC<WithdrawDialogProps> = ({
         <PoladotAccountDialogControls
           actionText={"Withdraw"}
           disabled={actionIsDisabled}
-          unlockedAccount={unlockedAccount}
-          updateUnlockedAccount={set_unlockedAccount}
+          unlockedAccount={unlockedAccount.value}
+          updateUnlockedAccount={unlockedAccount.set}
           onClose={onClose}
           onSend={sendTransaction}
         />

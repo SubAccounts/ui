@@ -93,3 +93,12 @@ export function prepareData() {
     setEncryptedDataString(doubleEncodedAccount.toString());
   }
 }
+
+export function setAccountToStore(account: KeyringPair) {
+  const data = accountStore.get();
+
+  accountStore.set({
+    ...data,
+    account,
+  });
+}
