@@ -6,8 +6,8 @@ import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
 import { ActiveTransactionWidget } from "@/components/transactions/ActiveTransactionWidget";
 import { Web3OnboardProvider } from "@/utils/web3-onboard/Web3Onboard.provider";
 import { BackGround } from "@/components/layout/BackGround";

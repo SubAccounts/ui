@@ -3,7 +3,7 @@
 import React from "react";
 
 import { titleH2 } from "@/components/primitives";
-import { ConnectWalletButton } from "@/components/ConnectWalletButton";
+import { ConnectWalletButton } from "@/components/Web3/ConnectWalletButton";
 
 export const ConnectWallet: React.FC = () => {
   return (

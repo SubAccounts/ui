@@ -13,7 +13,7 @@ import { DepositDialog } from "@/components/polkadot/account/chainflip/dialogs/D
 import { WithdrawDialog } from "@/components/polkadot/account/chainflip/dialogs/WithdrawDialog";
 import { useToggleHandler } from "@/hooks/useToggleHandler";
 import { TransferDialog } from "@/components/polkadot/account/dialogs/TransferDialog";
-import { OrangeButton } from "@/components/buttons/OrangeButton";
+import { OrangeButton } from "@/components/ui/buttons/OrangeButton";
 
 type AccountControlButtonsProps = {
   account: string;

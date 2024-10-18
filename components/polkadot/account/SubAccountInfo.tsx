@@ -14,7 +14,7 @@ import { useStore } from "@nanostores/react";
 import { titleH2, titleH3 } from "@/components/primitives";
 import { loadPolkadotLedger } from "@/stores/polkadot/polkadotLedgerStore";
 import { AccountControlButtons } from "@/components/polkadot/account/AccountControlButtons";
-import { OrangeButton } from "@/components/buttons/OrangeButton";
+import { OrangeButton } from "@/components/ui/buttons/OrangeButton";
 import { StakeDialog } from "@/components/polkadot/account/dialogs/StakeDialog";
 import { useToggler } from "@/hooks/useToggler";
 import {

@@ -5,7 +5,7 @@ import {
   Assets,
   AssetsNames,
 } from "@/components/polkadot/account/chainflip/assets";
-import { Tabs } from "@/components/buttons/Tabs";
+import { Tabs } from "@/components/ui/buttons/Tabs";
 
 type TokenSelectorProps = {
   value: Assets;

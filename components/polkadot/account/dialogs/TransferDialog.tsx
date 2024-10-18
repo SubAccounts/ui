@@ -16,7 +16,7 @@ import {
 } from "@/stores/polkadot/polkadotAccountsStore";
 import { PolkadotChainConfig } from "@/config/polkadotChainConfig";
 import { Chains } from "@/config/chains";
-import { Tabs } from "@/components/buttons/Tabs";
+import { Tabs } from "@/components/ui/buttons/Tabs";
 import { Input } from "@/components/common/Input";
 import { useSubAccountsBalanceLoad } from "@/hooks/useSubAccountsBalanceLoad";
 import { AccountSelector } from "@/components/polkadot/account/components/AccountSelector";

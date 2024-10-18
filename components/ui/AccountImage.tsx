@@ -1,7 +1,7 @@
 import React from "react";
 import { Image } from "@nextui-org/react";
 
-import { SizedContainer } from "@/components/SizedContainer";
+import { SizedContainer } from "@/components/ui/SizedContainer";
 
 function hexToHSL(hex: string): { h: number; s: number; l: number } {
   // HEX to RGB
@@ -211,7 +211,6 @@ export const AccountImage: React.FC<AccountImageProps> = ({
         radius="lg"
         shadow="sm"
         src={imageString}
-        width="100%"
       />
     </SizedContainer>
   );

@@ -12,9 +12,9 @@ import styles from "./AccountsList.module.css";
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
 import { titleH2 } from "@/components/primitives";
 import { PolkadotAccountBalance } from "@/components/polkadot/PolkadotAccountBalance";
-import { OrangeButton } from "@/components/buttons/OrangeButton";
+import { OrangeButton } from "@/components/ui/buttons/OrangeButton";
 import { useSubAccountsBalanceLoad } from "@/hooks/useSubAccountsBalanceLoad";
-import { AccountImage } from "@/components/AccountImage";
+import { AccountImage } from "@/components/ui/AccountImage";
 
 type AccountsListProps = {
   network: string;

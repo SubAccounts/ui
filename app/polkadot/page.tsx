@@ -2,7 +2,7 @@
 import React from "react";
 
 import { title } from "@/components/primitives";
-import { AccountsList } from "@/components/AccountsList";
+import { AccountsList } from "@/components/ui/AccountsList/AccountsList";
 import { Chains } from "@/config/chains";
 import { WalletConnector } from "@/components/Web3/WalletConnector";
 
@@ -37,7 +37,6 @@ export default function PolkadotPage() {
   }, []);
 
   return (
-    // <Center>
     <section className="flex flex-col h-full w-full items-start justify-start gap-4">
       <div className="flex flex-col items-center justify-center w-full">
         <div className="inline-block w-full text-left justify-center">
@@ -53,6 +52,5 @@ export default function PolkadotPage() {
         <AccountsList network={Chains.Polkadot} />
       </WalletConnector>
     </section>
-    // </Center>
   );
 }

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ConnectWallet } from "@/components/ConnectWallet";
+import { ConnectWallet } from "@/components/Web3/ConnectWallet";
 import { useWeb3Onboard } from "@/utils/web3-onboard/useWeb3Onboard";
 
 type WalletConnectorProps = {

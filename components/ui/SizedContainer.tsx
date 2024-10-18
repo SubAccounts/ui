@@ -15,8 +15,6 @@ export const SizedContainer: React.FC<SizedContainerProps> = ({
 
   const paddingY = (height / width / 2) * 100;
 
-  console.log(_ratio, paddingY);
-
   return (
     <div
       className="flex w-full h-0 relative"
