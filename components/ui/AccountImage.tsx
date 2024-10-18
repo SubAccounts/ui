@@ -3,105 +3,71 @@ import { Image } from "@nextui-org/react";
 
 import { SizedContainer } from "@/components/ui/SizedContainer";
 
-function hexToHSL(hex: string): { h: number; s: number; l: number } {
-  // HEX to RGB
-  let r = parseInt(hex.slice(1, 3), 16) / 255;
-  let g = parseInt(hex.slice(3, 5), 16) / 255;
-  let b = parseInt(hex.slice(5, 7), 16) / 255;
+const palette = [
+  // Blue
+  "#E3F2FD",
+  "#BBDEFB",
+  "#90CAF9",
+  "#64B5F6",
+  "#42A5F5",
+  "#2196F3",
+  "#1E88E5",
+  "#1976D2",
+  "#1565C0",
+  "#0D47A1",
+  // Green
+  "#E8F5E9",
+  "#C8E6C9",
+  "#A5D6A7",
+  "#81C784",
+  "#66BB6A",
+  "#4CAF50",
+  "#43A047",
+  "#388E3C",
+  "#2E7D32",
+  "#1B5E20",
+  // Red
+  "#FFEBEE",
+  "#FFCDD2",
+  "#EF9A9A",
+  "#E57373",
+  "#EF5350",
+  "#F44336",
+  "#E53935",
+  "#D32F2F",
+  "#C62828",
+  "#B71C1C",
+  // Yellow
+  "#FFFDE7",
+  "#FFF9C4",
+  "#FFF59D",
+  "#FFF176",
+  "#FFEE58",
+  "#FFEB3B",
+  "#FDD835",
+  "#FBC02D",
+  "#F9A825",
+  "#F57F17",
+  // Purple
+  "#F3E5F5",
+  "#E1BEE7",
+  "#CE93D8",
+  "#BA68C8",
+  "#AB47BC",
+  "#9C27B0",
+  "#8E24AA",
+  "#7B1FA2",
+  "#6A1B9A",
+  "#4A148C",
+];
 
-  // min max RGB
-  let max = Math.max(r, g, b),
-    min = Math.min(r, g, b);
-  let h = 0,
-    s = 0,
-    l = (max + min) / 2;
+const charMapping = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
 
-  if (max === min) {
-    // gray
-  } else {
-    let d = max - min;
+const colorMap: Record<string, string> = {};
 
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0);
-        break;
-      case g:
-        h = (b - r) / d + 2;
-        break;
-      case b:
-        h = (r - g) / d + 4;
-        break;
-    }
-    h /= 6;
-  }
-
-  return { h: h * 360, s: s, l: l };
-}
-
-const hue2rgb = (p: number, q: number, t: number): number => {
-  if (t < 0) t += 1;
-  if (t > 1) t -= 1;
-  if (t < 1 / 6) return p + (q - p) * 6 * t;
-  if (t < 1 / 3) return q;
-  if (t < 1 / 2) return p + (q - p) * 6 * (2 / 3 - t);
-
-  return p;
-};
-
-const toHex = (x: number): string => {
-  const hex = Math.round(x * 255).toString(16);
-
-  return hex.length == 1 ? "0" + hex : hex;
-};
-
-function hslToHex(h: number, s: number, l: number): string {
-  // HSL to RGB
-  h /= 360;
-
-  let r, g, b;
-
-  if (s == 0) {
-    r = g = b = l; // gray
-  } else {
-    let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    let p = 2 * l - q;
-
-    r = hue2rgb(p, q, h + 1 / 3);
-    g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1 / 3);
-  }
-
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-}
-
-function getComplementaryColor(hex: string): string {
-  // HEX to HSL
-  const hsl = hexToHSL(hex);
-
-  // Hue rotate 180 deg
-  hsl.h = (hsl.h + 180) % 360;
-
-  // HSL to HEX
-  return hslToHex(hsl.h, hsl.s, hsl.l);
-}
-
-function textToColor(text: string) {
-  let hash = 0;
-
-  for (let i = 0; i < text.length; i++) {
-    hash = text.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  let color = "#";
-
-  for (let i = 0; i < 3; i++) {
-    const value = (hash >> (i * 8)) & 0xff;
-
-    color += ("00" + value.toString(16)).substr(-2);
-  }
-
-  return color;
-}
+charMapping.forEach((char, index) => {
+  colorMap[char] = palette[index % palette.length];
+});
 
 function generateShapeFromString(
   ctx: CanvasRenderingContext2D,
@@ -116,7 +82,7 @@ function generateShapeFromString(
 
   const size = 200 + (text.charCodeAt(5) % 100);
 
-  ctx.fillStyle = getComplementaryColor(color);
+  ctx.fillStyle = color;
 
   switch (shape) {
     case "circle":
@@ -146,7 +112,7 @@ function generateImage(account: string, ratio: string) {
   const ctx = canvas.getContext("2d");
 
   if (ctx) {
-    const repeatedString = account.repeat(10);
+    const repeatedString = account.repeat(10).toUpperCase();
     const columns = 10;
     const rows = 5;
     const cellWidth = width / columns;
@@ -159,24 +125,21 @@ function generateImage(account: string, ratio: string) {
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < columns; col++) {
-        // Take 6 symbols
-        const subStr =
-          repeatedString[charIndex] +
-          repeatedString[charIndex + 1] +
-          repeatedString[charIndex + 2] +
-          repeatedString[charIndex + 3] +
-          repeatedString[charIndex + 4] +
-          repeatedString[charIndex + 5];
+        charIndex++;
 
-        ctx.fillStyle = textToColor(subStr);
+        ctx.fillStyle = colorMap[repeatedString[charIndex]];
 
         ctx.fillRect(col * cellWidth, row * cellHeight, cellWidth, cellHeight);
-
-        charIndex = (charIndex + 6) % repeatedString.length;
       }
     }
 
-    generateShapeFromString(ctx, account, width, height, textToColor(account));
+    generateShapeFromString(
+      ctx,
+      account,
+      width,
+      height,
+      colorMap[repeatedString[2]],
+    );
 
     return canvas.toDataURL("image/png");
   }
