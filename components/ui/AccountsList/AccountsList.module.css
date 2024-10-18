@@ -1,0 +1,13 @@
+.card {
+
+}
+
+.card img {
+    transition: all .3s ease;
+    filter: hue-rotate(0deg) grayscale(0.1) blur(12px);
+}
+
+.card:hover img {
+    transform: scale(1.125);
+    filter: hue-rotate(45deg) grayscale(0) blur(24px);
+}
