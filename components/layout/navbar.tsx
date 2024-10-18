@@ -33,7 +33,7 @@ import {
   accountBalance,
   accountEthBalance,
 } from "@/stores/erc20Store";
-import { ConnectWalletButton } from "@/components/ConnectWalletButton";
+import { ConnectWalletButton } from "@/components/Web3/ConnectWalletButton";
 import { useToggleHandler } from "@/hooks/useToggleHandler";
 export const Navbar = () => {
   const pathname = usePathname();

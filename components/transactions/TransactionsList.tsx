@@ -5,8 +5,8 @@ import { Link } from "@nextui-org/link";
 import { abbreviateAddress } from "common-crypto-tools";
 import clsx from "clsx";
 
-import { HeadCell } from "@/components/table/HeadCell";
-import { BodyCell } from "@/components/table/BodyCell";
+import { HeadCell } from "@/components/ui/table/HeadCell";
+import { BodyCell } from "@/components/ui/table/BodyCell";
 import {
   TransactionNetworkName,
   TransactionNetworks,

@@ -1,7 +1,7 @@
 import { Link } from "@nextui-org/react";
 
 import { title, subtitle } from "@/components/primitives";
-import { OrangeButton } from "@/components/buttons/OrangeButton";
+import { OrangeButton } from "@/components/ui/buttons/OrangeButton";
 
 export default function Home() {
   return (
